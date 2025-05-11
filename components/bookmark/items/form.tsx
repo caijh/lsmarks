@@ -39,6 +39,7 @@ interface BookmarkItemFormProps {
   isSubmitting?: boolean;
   locale?: string;
   showSubmitButton?: boolean;
+  registerSubmit?: (submitFn: () => void) => void; // 添加注册提交函数的属性
 }
 
 export function BookmarkItemForm({
@@ -48,6 +49,7 @@ export function BookmarkItemForm({
   isSubmitting = false,
   locale = 'zh',
   showSubmitButton = true,
+  registerSubmit,
 }: BookmarkItemFormProps) {
   const [urlChanged, setUrlChanged] = useState(false);
 
@@ -74,6 +76,13 @@ export function BookmarkItemForm({
 
     await onSubmit(formData);
   };
+
+  // 注册提交函数，使父组件可以触发表单提交
+  useEffect(() => {
+    if (registerSubmit) {
+      registerSubmit(() => form.handleSubmit(handleSubmit)());
+    }
+  }, [registerSubmit, form, handleSubmit]);
 
   // 处理图标URL生成结果
   const handleIconUrlGenerated = useCallback((iconUrl: string) => {

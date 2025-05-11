@@ -1,11 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useCallback, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Trash2, Loader2, AlertCircle } from "lucide-react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
 import { toast } from "sonner";
 import {
   Dialog,
@@ -39,27 +36,22 @@ export function ItemFormDialog({
   // 硬编码为中文
   const locale = 'zh';
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [formKey, setFormKey] = useState(Date.now()); // 添加一个key来强制重新渲染表单
 
-  // 表单验证模式
-  const formSchema = z.object({
-    title: z.string().min(1, locale === 'zh' ? "标题不能为空" : "Title cannot be empty").max(255, locale === 'zh' ? "标题不能超过255个字符" : "Title cannot exceed 255 characters"),
-    url: z.string().url(locale === 'zh' ? "请输入有效的URL" : "Please enter a valid URL").max(2000, locale === 'zh' ? "URL不能超过2000个字符" : "URL cannot exceed 2000 characters"),
-    description: z.string().max(1000, locale === 'zh' ? "描述不能超过1000个字符" : "Description cannot exceed 1000 characters").optional(),
-    icon_url: z.string().url(locale === 'zh' ? "请输入有效的URL" : "Please enter a valid URL").max(255, locale === 'zh' ? "图标URL不能超过255个字符" : "Icon URL cannot exceed 255 characters").optional().or(z.literal("")),
-    subcategory_uuid: z.string().min(1, locale === 'zh' ? "子分类UUID不能为空" : "Subcategory UUID cannot be empty"),
-  });
+  // 当对话框打开或关闭时，重置表单key
+  useEffect(() => {
+    if (open) {
+      setFormKey(Date.now());
+    }
+  }, [open]);
 
-  // 创建表单
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      title: item?.title || "",
-      url: item?.url || "",
-      description: item?.description || "",
-      icon_url: item?.icon_url || "",
-      subcategory_uuid: subcategoryUuid,
-    },
-  });
+  // 创建一个引用来存储表单提交函数
+  const formSubmitRef = useRef<(() => void) | null>(null);
+
+  // 创建一个回调函数，用于子组件注册提交函数
+  const registerSubmit = useCallback((submitFn: () => void) => {
+    formSubmitRef.current = submitFn;
+  }, []);
 
   const handleSubmit = async (data: BookmarkItemFormData) => {
     setIsSubmitting(true);
@@ -127,12 +119,14 @@ export function ItemFormDialog({
         </DialogHeader>
         <div className="space-y-6">
           <BookmarkItemForm
+            key={formKey} // 使用key强制重新渲染
             initialData={initialData}
             subcategoryUuid={subcategoryUuid}
             onSubmit={handleSubmit}
             isSubmitting={isSubmitting}
             locale={locale}
             showSubmitButton={false} /* 不显示表单内的提交按钮 */
+            registerSubmit={registerSubmit} // 传递注册函数
           />
 
           <div className="flex justify-between items-center pt-4 border-t">
@@ -153,9 +147,14 @@ export function ItemFormDialog({
             )}
 
             <Button
-              type="submit"
+              type="button"
               disabled={isSubmitting}
-              onClick={form.handleSubmit(handleSubmit)}
+              onClick={() => {
+                // 调用子组件的提交函数
+                if (formSubmitRef.current) {
+                  formSubmitRef.current();
+                }
+              }}
             >
               {isSubmitting ? (
                 <>

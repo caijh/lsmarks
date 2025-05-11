@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   DndContext,
   closestCenter,
@@ -36,7 +36,9 @@ function SortableSubcategoryItem({ id, subcategory, isSelected }) {
     transition: {
       duration: 150,
       easing: 'cubic-bezier(0.25, 1, 0.5, 1)'
-    }
+    },
+    // 添加以下配置，使拖拽更容易触发
+    activationConstraint: null
   });
 
   const style = {
@@ -56,6 +58,7 @@ function SortableSubcategoryItem({ id, subcategory, isSelected }) {
           ? "bg-primary text-primary-foreground border-primary shadow-md"
           : "bg-background hover:bg-accent"
       } ${isDragging ? "border-primary shadow-md scale-105 z-20" : "border-border"} glass-effect`}
+      data-draggable="true" // 添加数据属性，明确标记为可拖拽元素
       {...attributes}
       {...listeners}
       title={locale === 'zh' ? "拖拽调整位置" : "Drag to reorder"}
@@ -83,12 +86,14 @@ export default function SortableSubcategoriesList({
   const [isSaving, setIsSaving] = useState(false);
   const [hasChanges, setHasChanges] = useState(false);
 
+  // 添加useEffect钩子，确保在组件挂载和subcategories变化时更新sortableItems
+  useEffect(() => {
+    setSortableItems(subcategories);
+  }, [subcategories]);
+
   const sensors = useSensors(
     useSensor(PointerSensor, {
-      activationConstraint: {
-        distance: 8, // 增加拖拽激活距离，使触发更容易
-        tolerance: 8,
-      },
+      // 移除激活约束，使拖拽更容易触发
     }),
     useSensor(KeyboardSensor, {
       coordinateGetter: sortableKeyboardCoordinates,
@@ -170,6 +175,10 @@ export default function SortableSubcategoriesList({
         </div>
       </div>
 
+      <div className="text-sm text-muted-foreground mb-2 p-2 bg-muted/30 rounded-md">
+        提示：点击并拖动子分类卡片可调整顺序。完成后点击"保存排序"按钮。
+      </div>
+
       <div className="bg-muted/30 p-4 rounded-lg border border-dashed relative">
         <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-background px-2 text-xs text-muted-foreground">
           网格拖拽区域
@@ -178,7 +187,7 @@ export default function SortableSubcategoriesList({
           sensors={sensors}
           collisionDetection={closestCenter}
           onDragEnd={handleDragEnd}
-          modifiers={[]}
+          // 移除可能导致问题的modifiers
         >
           <SortableContext
             items={sortableItems.map(item => item.uuid)}
