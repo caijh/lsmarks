@@ -277,9 +277,19 @@ export function CollectionDetailView({
   // 处理保存分类
   const handleSaveCategory = async (data: any) => {
     try {
+      // 判断是创建新分类还是更新现有分类
+      const isEditing = formMode === "edit" && selectedItem && selectedItem.uuid;
+
+      // 设置请求URL和方法
+      const url = isEditing
+        ? `/api/bookmark/categories/${selectedItem.uuid}`
+        : "/api/bookmark/categories";
+
+      const method = isEditing ? "PUT" : "POST";
+
       // 调用API保存分类
-      const response = await fetch("/api/bookmark/categories", {
-        method: "POST",
+      const response = await fetch(url, {
+        method: method,
         headers: {
           "Content-Type": "application/json",
         },
@@ -291,13 +301,13 @@ export function CollectionDetailView({
       });
 
       if (!response.ok) {
-        throw new Error("保存分类失败");
+        throw new Error(isEditing ? "更新分类失败" : "保存分类失败");
       }
 
-      toast.success("分类已保存");
+      toast.success(isEditing ? "分类已更新" : "分类已保存");
       router.refresh();
     } catch (error) {
-      toast.error("保存分类失败");
+      toast.error(formMode === "edit" ? "更新分类失败" : "保存分类失败");
       console.error(error);
     }
   };
@@ -305,9 +315,19 @@ export function CollectionDetailView({
   // 处理保存子分类
   const handleSaveSubcategory = async (data: any) => {
     try {
+      // 判断是创建新子分类还是更新现有子分类
+      const isEditing = formMode === "edit" && selectedItem && selectedItem.uuid;
+
+      // 设置请求URL和方法
+      const url = isEditing
+        ? `/api/bookmark/subcategories/${selectedItem.uuid}`
+        : "/api/bookmark/subcategories";
+
+      const method = isEditing ? "PUT" : "POST";
+
       // 调用API保存子分类
-      const response = await fetch("/api/bookmark/subcategories", {
-        method: "POST",
+      const response = await fetch(url, {
+        method: method,
         headers: {
           "Content-Type": "application/json",
         },
@@ -319,13 +339,13 @@ export function CollectionDetailView({
       });
 
       if (!response.ok) {
-        throw new Error("保存子分类失败");
+        throw new Error(isEditing ? "更新子分类失败" : "保存子分类失败");
       }
 
-      toast.success("子分类已保存");
+      toast.success(isEditing ? "子分类已更新" : "子分类已保存");
       router.refresh();
     } catch (error) {
-      toast.error("保存子分类失败");
+      toast.error(formMode === "edit" ? "更新子分类失败" : "保存子分类失败");
       console.error(error);
     }
   };
