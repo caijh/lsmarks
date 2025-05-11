@@ -3,6 +3,7 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
+import { useEffect } from "react";
 import { BookmarkSubcategoryFormData } from "@/types/bookmark/subcategory";
 import { Button } from "@/components/ui/button";
 import {
@@ -31,6 +32,7 @@ interface BookmarkSubcategoryFormProps {
   isSubmitting?: boolean;
   locale?: string;
   showSubmitButton?: boolean;
+  registerSubmit?: (submitFn: () => void) => void; // 添加注册提交函数的属性
 }
 
 export function BookmarkSubcategoryForm({
@@ -40,6 +42,7 @@ export function BookmarkSubcategoryForm({
   isSubmitting = false,
   locale = 'zh',
   showSubmitButton = true,
+  registerSubmit,
 }: BookmarkSubcategoryFormProps) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -58,6 +61,13 @@ export function BookmarkSubcategoryForm({
 
     await onSubmit(formData);
   };
+
+  // 注册提交函数，使父组件可以触发表单提交
+  useEffect(() => {
+    if (registerSubmit) {
+      registerSubmit(() => form.handleSubmit(handleSubmit)());
+    }
+  }, [registerSubmit, form, handleSubmit]);
 
   return (
     <Form {...form}>

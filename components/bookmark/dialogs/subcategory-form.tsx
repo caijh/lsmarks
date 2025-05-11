@@ -1,11 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useCallback, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Trash2, Loader2 } from "lucide-react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
 import {
   Dialog,
   DialogContent,
@@ -38,21 +35,14 @@ export function SubcategoryFormDialog({
   locale = 'zh', // 默认为中文
 }: SubcategoryFormDialogProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [formKey, setFormKey] = useState(Date.now()); // 添加一个key来强制重新渲染表单
 
-  // 表单验证模式
-  const formSchema = z.object({
-    name: z.string().min(1, "名称不能为空").max(255, "名称不能超过255个字符"),
-    category_uuid: z.string().min(1, "分类UUID不能为空"),
-  });
-
-  // 创建表单
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      name: subcategory?.name || "",
-      category_uuid: categoryUuid,
-    },
-  });
+  // 当对话框打开或关闭时，重置表单key
+  useEffect(() => {
+    if (open) {
+      setFormKey(Date.now());
+    }
+  }, [open]);
 
   const handleSubmit = async (data: BookmarkSubcategoryFormData) => {
     setIsSubmitting(true);
@@ -74,6 +64,14 @@ export function SubcategoryFormDialog({
       }
     : undefined;
 
+  // 创建一个引用来存储表单提交函数
+  const formSubmitRef = useRef<(() => void) | null>(null);
+
+  // 创建一个回调函数，用于子组件注册提交函数
+  const registerSubmit = useCallback((submitFn: () => void) => {
+    formSubmitRef.current = submitFn;
+  }, []);
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[500px]">
@@ -91,12 +89,14 @@ export function SubcategoryFormDialog({
         </DialogHeader>
         <div className="space-y-6">
           <BookmarkSubcategoryForm
+            key={formKey} // 使用key强制重新渲染
             initialData={initialData}
             categoryUuid={categoryUuid}
             onSubmit={handleSubmit}
             isSubmitting={isSubmitting}
             locale={locale}
             showSubmitButton={false} /* 不显示表单内的提交按钮 */
+            registerSubmit={registerSubmit} // 传递注册函数
           />
 
           <div className="flex justify-between items-center pt-4 border-t">
@@ -117,9 +117,14 @@ export function SubcategoryFormDialog({
             )}
 
             <Button
-              type="submit"
+              type="button"
               disabled={isSubmitting}
-              onClick={form.handleSubmit(handleSubmit)}
+              onClick={() => {
+                // 调用子组件的提交函数
+                if (formSubmitRef.current) {
+                  formSubmitRef.current();
+                }
+              }}
             >
               {isSubmitting ? (
                 <>
