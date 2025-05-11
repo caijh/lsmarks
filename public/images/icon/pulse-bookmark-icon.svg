@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    .bookmark-outline {
+      fill: none;
+      stroke: #6b7280;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-dasharray: 100;
+      stroke-dashoffset: 100;
+      animation: draw 3s ease-in-out infinite alternate;
+    }
+    
+    .pulse-circle {
+      fill: #6b7280;
+      transform-origin: center;
+      opacity: 0;
+      animation: pulse 3s ease-out infinite;
+    }
+    
+    .pulse-circle-1 { animation-delay: 0s; }
+    .pulse-circle-2 { animation-delay: 0.5s; }
+    .pulse-circle-3 { animation-delay: 1s; }
+    
+    .loading-bar {
+      fill: #6b7280;
+      transform-origin: left center;
+      animation: grow 2s ease-in-out infinite;
+    }
+    
+    .loading-bar-1 { animation-delay: 0s; }
+    .loading-bar-2 { animation-delay: 0.2s; }
+    .loading-bar-3 { animation-delay: 0.4s; }
+    .loading-bar-4 { animation-delay: 0.6s; }
+    
+    @keyframes draw {
+      0% { stroke-dashoffset: 100; }
+      40%, 60% { stroke-dashoffset: 0; }
+      100% { stroke-dashoffset: 0; }
+    }
+    
+    @keyframes pulse {
+      0% { 
+        opacity: 0.8;
+        transform: scale(0);
+      }
+      50% { opacity: 0; }
+      100% { 
+        opacity: 0;
+        transform: scale(2);
+      }
+    }
+    
+    @keyframes grow {
+      0%, 100% { transform: scaleX(0.2); }
+      50% { transform: scaleX(1); }
+    }
+    
+    /* For dark mode compatibility */
+    @media (prefers-color-scheme: dark) {
+      .bookmark-outline {
+        stroke: #9ca3af;
+      }
+      .pulse-circle, .loading-bar {
+        fill: #9ca3af;
+      }
+    }
+  </style>
+  
+  <!-- Background Circle -->
+  <circle cx="32" cy="32" r="30" fill="none" stroke="#e5e7eb" stroke-width="1" />
+  
+  <!-- Bookmark Outline -->
+  <path class="bookmark-outline" d="M38,20 v16 l-6,-4 l-6,4 v-16 a2,2 0 0,1 2,-2 h8 a2,2 0 0,1 2,2 z" />
+  
+  <!-- Pulse Circles -->
+  <circle class="pulse-circle pulse-circle-1" cx="32" cy="32" r="10" />
+  <circle class="pulse-circle pulse-circle-2" cx="32" cy="32" r="10" />
+  <circle class="pulse-circle pulse-circle-3" cx="32" cy="32" r="10" />
+  
+  <!-- Loading Bars -->
+  <rect class="loading-bar loading-bar-1" x="20" y="44" width="6" height="2" rx="1" />
+  <rect class="loading-bar loading-bar-2" x="28" y="44" width="6" height="2" rx="1" />
+  <rect class="loading-bar loading-bar-3" x="36" y="44" width="6" height="2" rx="1" />
+  <rect class="loading-bar loading-bar-4" x="44" y="44" width="6" height="2" rx="1" transform="translate(50, 0) scale(-1, 1)" />
+</svg>

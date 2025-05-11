@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    .bookmark {
+      fill: #6b7280;
+    }
+    
+    .scan-line {
+      fill: none;
+      stroke: #6b7280;
+      stroke-width: 2;
+      stroke-linecap: round;
+      opacity: 0.7;
+      transform-origin: center;
+      animation: scan 3s ease-in-out infinite;
+    }
+    
+    .corner {
+      fill: none;
+      stroke: #6b7280;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      opacity: 0;
+      animation: blink 3s ease-in-out infinite;
+    }
+    
+    .corner-1 { animation-delay: 0s; }
+    .corner-2 { animation-delay: 0.5s; }
+    .corner-3 { animation-delay: 1s; }
+    .corner-4 { animation-delay: 1.5s; }
+    
+    @keyframes scan {
+      0%, 100% { transform: translateY(-20px); opacity: 0; }
+      50% { transform: translateY(20px); opacity: 0.7; }
+    }
+    
+    @keyframes blink {
+      0%, 100% { opacity: 0.2; }
+      50% { opacity: 1; }
+    }
+    
+    /* For dark mode compatibility */
+    @media (prefers-color-scheme: dark) {
+      .bookmark, .scan-line, .corner {
+        stroke: #9ca3af;
+        fill: #9ca3af;
+      }
+    }
+  </style>
+  
+  <!-- Background Circle -->
+  <circle cx="32" cy="32" r="30" fill="none" stroke="#e5e7eb" stroke-width="1" />
+  
+  <!-- Scan Frame -->
+  <line class="scan-line" x1="16" y1="32" x2="48" y2="32" />
+  
+  <!-- Corners -->
+  <path class="corner corner-1" d="M16,22 L16,16 L22,16" />
+  <path class="corner corner-2" d="M42,16 L48,16 L48,22" />
+  <path class="corner corner-3" d="M48,42 L48,48 L42,48" />
+  <path class="corner corner-4" d="M22,48 L16,48 L16,42" />
+  
+  <!-- Bookmark Icon -->
+  <path class="bookmark" d="M38,20 v16 l-6,-4 l-6,4 v-16 a2,2 0 0,1 2,-2 h8 a2,2 0 0,1 2,2 z" />
+</svg>

@@ -1,0 +1,84 @@
+"use client";
+
+// 集中导入和导出常用图标
+// 这样可以在一个地方管理所有图标，避免重复导入
+// 同时利用Next.js的Tree Shaking优化
+
+// 导入常用图标
+import {
+  ArrowLeft,
+  Bookmark,
+  BookmarkPlus,
+  Calendar,
+  Check,
+  CheckCircle,
+  ChevronDown,
+  ChevronLeft,
+  ChevronRight,
+  Droplets,
+  Edit,
+  ExternalLink,
+  Flame,
+  Folder,
+  FolderOpen,
+  FolderPlus,
+  Globe,
+  // Github 图标已移除，不再需要
+  Grid,
+  Info,
+  Link2,
+  List,
+  Loader2,
+  Lock,
+  LogOut,
+  Moon,
+  MoreVertical,
+  MoveVertical,
+  PanelLeft,
+  Plus,
+  PlusCircle,
+  Sun,
+  Trash2,
+  Trophy,
+  User,
+  Zap
+} from "lucide-react";
+
+// 导出所有图标
+export {
+  ArrowLeft,
+  Bookmark,
+  BookmarkPlus,
+  Calendar,
+  Check,
+  CheckCircle,
+  ChevronDown,
+  ChevronLeft,
+  ChevronRight,
+  Droplets,
+  Edit,
+  ExternalLink,
+  Flame,
+  Folder,
+  FolderOpen,
+  FolderPlus,
+  Globe,
+  Grid,
+  Info,
+  Link2,
+  List,
+  Loader2,
+  Lock,
+  LogOut,
+  Moon,
+  MoreVertical,
+  MoveVertical,
+  PanelLeft,
+  Plus,
+  PlusCircle,
+  Sun,
+  Trash2,
+  Trophy,
+  User,
+  Zap
+};
