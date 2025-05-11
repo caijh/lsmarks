@@ -103,8 +103,8 @@ export function BookmarkItemList({
           ))}
         </Reorder.Group>
       ) : compact ? (
-        // 紧凑模式 - 使用更小的网格
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-3">
+        // 紧凑模式 - 使用与标准模式相同的网格布局（每行4列）
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-3">
           {items.map((item) => (
             <BookmarkItemCard
               key={item.uuid}

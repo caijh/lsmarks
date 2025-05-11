@@ -110,10 +110,11 @@ export function CollectionDetailView({
     (subcategory) => subcategory.uuid === selectedSubcategoryUuid
   );
 
-  // 当选中的分类变化时，默认选中第一个子分类
+  // 当选中的分类变化时，默认选择"全部"（不选择具体子分类）
   useEffect(() => {
     if (selectedCategory && selectedCategory.subcategories && selectedCategory.subcategories.length > 0) {
-      setSelectedSubcategoryUuid(selectedCategory.subcategories[0].uuid);
+      // 设置为 undefined 表示选择"全部"
+      setSelectedSubcategoryUuid(undefined);
     } else {
       setSelectedSubcategoryUuid(undefined);
     }
@@ -606,7 +607,7 @@ export function CollectionDetailView({
         <div className="grid grid-cols-1 md:grid-cols-7 gap-6 mt-6">
         {/* 左侧子分类列表 */}
         <div className="md:col-span-1">
-          <div className="bg-background/80 backdrop-blur-sm rounded-lg p-4 border border-border/60 shadow-sm sticky top-24">
+          <div className="bg-background/65 backdrop-blur-sm rounded-lg p-4 border border-border/60 shadow-sm sticky top-24">
             {selectedCategory && selectedCategory.subcategories && selectedCategory.subcategories.length > 0 && !subcategoriesReorderEnabled ? (
                 <div className="space-y-2">
                   {/* 子分类标题和全部选项 */}
@@ -619,7 +620,7 @@ export function CollectionDetailView({
                     className={`p-2.5 rounded-md cursor-pointer flex justify-between items-center transition-all group ${
                       selectedSubcategoryUuid === undefined
                         ? "bg-primary text-primary-foreground shadow-sm"
-                        : "hover:bg-muted/70 hover:translate-x-0.5"
+                        : "hover:bg-muted/65 backdrop-blur-sm hover:translate-x-0.5"
                     }`}
                     onClick={() => setSelectedSubcategoryUuid(undefined)}
                   >
@@ -635,7 +636,7 @@ export function CollectionDetailView({
                       className={`p-2.5 rounded-md cursor-pointer flex justify-between items-center transition-all group ${
                         subcategory.uuid === selectedSubcategoryUuid
                           ? "bg-primary text-primary-foreground shadow-sm"
-                          : "hover:bg-muted/70 hover:translate-x-0.5"
+                          : "hover:bg-muted/65 backdrop-blur-sm hover:translate-x-0.5"
                       }`}
                       onClick={() => setSelectedSubcategoryUuid(subcategory.uuid)}
                     >

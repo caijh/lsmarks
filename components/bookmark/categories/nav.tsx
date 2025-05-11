@@ -47,7 +47,7 @@ export function CategoryNav({
                 className={`relative group px-4 py-2 rounded-md border transition-all duration-200 hover:border-primary/50 hover:-translate-y-0.5 hover:shadow-md ${
                   category.uuid === effectiveSelectedUuid
                     ? "bg-primary text-primary-foreground border-primary shadow-md scale-105"
-                    : "bg-background hover:bg-accent"
+                    : "bg-background/65 hover:bg-accent/65 backdrop-blur-sm"
                 } glass-effect font-medium cursor-pointer`}
               >
                 {category.name}
