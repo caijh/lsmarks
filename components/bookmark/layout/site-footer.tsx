@@ -27,7 +27,7 @@ export function SiteFooter() {
             {/* 底部导航链接已被移除 */}
 
             <a
-              href="https://github.com/yourusername/leishui-bookmark"
+              href="https://github.com/lt-fcs/lsmarks"
               target="_blank"
               rel="noreferrer"
               className="text-muted-foreground transition-colors hover:text-foreground"
