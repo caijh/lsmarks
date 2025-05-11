@@ -167,6 +167,23 @@ Vercel 是部署 Next.js 应用的最佳平台，提供免费计划和简单的�
    - 验证所有环境变量是否正确设置
 
 
+## 联系与支持
+
 <div align="center">
+  <div style="display: flex; justify-content: center; gap: 20px; margin-bottom: 20px; flex-wrap: wrap;">
+    <div>
+      <img src="public/images/买个辣条.jpg" alt="赞助二维码" width="200" />
+      <p>赞助支持</p>
+    </div>
+    <div>
+      <img src="public/images/一起交流.jpg" alt="微信联系方式" width="200" />
+      <p>微信联系</p>
+    </div>
+    <div>
+      <img src="public/images/wxq.jpg" alt="微信群二维码" width="200" />
+      <p>微信群</p>
+    </div>
+  </div>
+
   <p>雷水书签 - 解卦象征解脱、解除险难。坎为雨，震为雷，雷雨兴起，万物当春，纷纷舒发生机，为解。</p>
 </div>
