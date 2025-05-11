@@ -637,22 +637,27 @@ export function QuickAddBookmarkDialog({
           saveLastSelected(categoryUuid, subcategoryUuid);
         }
 
-        // 重置表单
-        form.reset();
-        setSelectedCategory(null);
-        setSubcategories([]);
-        setSaveStage('idle');
-
         // 显示成功消息
         toast.success("书签添加成功");
 
-        // 刷新数据
-        router.refresh();
-
-        // 调用成功回调
+        // 先调用成功回调，确保状态更新
         if (onSuccess) {
           onSuccess();
         }
+
+        // 延迟重置表单，避免状态丢失
+        setTimeout(() => {
+          // 刷新数据，但不重置状态
+          router.refresh();
+        }, 100);
+
+        // 最后再重置表单状态
+        setTimeout(() => {
+          form.reset();
+          setSelectedCategory(null);
+          setSubcategories([]);
+          setSaveStage('idle');
+        }, 500);
       }, 0);
     } catch (error) {
       console.error("添加书签失败:", error);

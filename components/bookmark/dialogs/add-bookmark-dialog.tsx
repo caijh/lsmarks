@@ -255,18 +255,23 @@ export function AddBookmarkDialog({
       toast.success("书签添加成功");
       setOpen(false);
 
-      // 重置表单
-      bookmarkForm.reset();
-      setSelectedCategory(null);
-      setSubcategories([]);
-
-      // 使用 Next.js 的 router.refresh() 刷新数据，而不是刷新整个页面
-      router.refresh();
-
-      // 调用成功回调
+      // 先调用成功回调，确保状态更新
       if (onSuccess) {
         onSuccess();
       }
+
+      // 延迟刷新数据，避免状态丢失
+      setTimeout(() => {
+        // 刷新数据，但不重置状态
+        router.refresh();
+      }, 100);
+
+      // 最后再重置表单状态
+      setTimeout(() => {
+        bookmarkForm.reset();
+        setSelectedCategory(null);
+        setSubcategories([]);
+      }, 500);
     } catch (error) {
       console.error("添加书签失败:", error);
       toast.error("添加书签失败");

@@ -109,7 +109,15 @@ export async function POST(request: Request) {
 
     // 创建用户记录
     try {
-      const { error: createUserError } = await supabase
+      console.log("准备创建用户记录，数据:", {
+        uuid: userUuid,
+        email,
+        nickname: name,
+        username,
+        user_level: "1"
+      });
+
+      const { data: userData, error: createUserError } = await supabase
         .from("users")
         .insert({
           uuid: userUuid,
@@ -122,8 +130,9 @@ export async function POST(request: Request) {
           signin_type: "email",
           signin_provider: "credentials",
           signin_ip: "127.0.0.1", // 使用默认IP，避免服务器端函数问题
-          user_level: "free"
-        });
+          user_level: "1" // 使用"1"作为初始用户等级，对应"初六"级别
+        })
+        .select();
 
       if (createUserError) {
         console.error("创建用户时出错:", createUserError);
