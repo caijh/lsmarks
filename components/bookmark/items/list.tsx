@@ -19,6 +19,7 @@ interface BookmarkItemListProps {
   onAdd?: () => void;
   onReorder?: (items: BookmarkItem[]) => void;
   reorderEnabled?: boolean; // 添加排序模式状态
+  compact?: boolean; // 紧凑模式，用于在"全部"视图中显示
 }
 
 export function BookmarkItemList({
@@ -30,6 +31,7 @@ export function BookmarkItemList({
   onAdd,
   onReorder,
   reorderEnabled = false, // 默认不启用排序模式
+  compact = false, // 默认不启用紧凑模式
 }: BookmarkItemListProps) {
   const [sortableItems, setSortableItems] = useState<BookmarkItem[]>([]);
 
@@ -100,7 +102,23 @@ export function BookmarkItemList({
             />
           ))}
         </Reorder.Group>
+      ) : compact ? (
+        // 紧凑模式 - 使用更小的网格
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-3">
+          {items.map((item) => (
+            <BookmarkItemCard
+              key={item.uuid}
+              item={item}
+              isOwner={isOwner}
+              editMode={editMode}
+              onEdit={onEdit}
+              onDelete={onDelete}
+              compact={true} // 传递紧凑模式到卡片组件
+            />
+          ))}
+        </div>
       ) : (
+        // 标准模式
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-4">
           {items.map((item) => (
             <BookmarkItemCard

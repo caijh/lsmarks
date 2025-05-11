@@ -119,6 +119,14 @@ export function CollectionDetailView({
     }
   }, [selectedCategoryUuid, selectedCategory]);
 
+  // 获取所有子分类的列表，用于在右侧显示所有书签
+  const allSubcategoriesItems = selectedCategory?.subcategories?.flatMap(subcategory =>
+    (subcategory.items || []).map(item => ({
+      ...item,
+      subcategory_name: subcategory.name // 添加子分类名称，用于显示
+    }))
+  ) || [];
+
   // 同步本地分类状态
   useEffect(() => {
     setLocalCategories(categoriesWithSubcategories);
@@ -601,9 +609,24 @@ export function CollectionDetailView({
           <div className="bg-background/80 backdrop-blur-sm rounded-lg p-4 border border-border/60 shadow-sm sticky top-24">
             {selectedCategory && selectedCategory.subcategories && selectedCategory.subcategories.length > 0 && !subcategoriesReorderEnabled ? (
                 <div className="space-y-2">
-                  {/* 子分类标题已移除 */}
+                  {/* 子分类标题和全部选项 */}
                   <div className="flex justify-between items-center mb-2">
                     <div className="h-1 w-12 bg-primary/30 rounded-full"></div>
+                  </div>
+
+                  {/* 添加"全部"选项 */}
+                  <div
+                    className={`p-2.5 rounded-md cursor-pointer flex justify-between items-center transition-all group ${
+                      selectedSubcategoryUuid === undefined
+                        ? "bg-primary text-primary-foreground shadow-sm"
+                        : "hover:bg-muted/70 hover:translate-x-0.5"
+                    }`}
+                    onClick={() => setSelectedSubcategoryUuid(undefined)}
+                  >
+                    <div className="flex items-center gap-2">
+                      <div className={`w-1.5 h-1.5 rounded-full ${selectedSubcategoryUuid === undefined ? "bg-primary-foreground" : "bg-primary/70"}`}></div>
+                      <span className="truncate font-medium text-sm">全部</span>
+                    </div>
                   </div>
 
                   {selectedCategory.subcategories.map((subcategory) => (
@@ -664,6 +687,7 @@ export function CollectionDetailView({
         {/* 右侧书签列表 */}
         <div className="md:col-span-6">
           {selectedSubcategory ? (
+            // 显示选中的子分类的书签
             bookmarksReorderEnabled ? (
               <SortableBookmarkList
                 items={selectedSubcategory.items || []}
@@ -680,6 +704,49 @@ export function CollectionDetailView({
                 onAdd={handleAddItem}
               />
             )
+          ) : selectedCategory && selectedCategory.subcategories && selectedCategory.subcategories.length > 0 && !selectedSubcategoryUuid ? (
+            // 显示所有子分类的书签（当选择"全部"时）
+            <div>
+              <div className="mb-4 pb-2 border-b">
+                <h3 className="text-lg font-medium">所有书签</h3>
+                <p className="text-sm text-muted-foreground">显示所有子分类的书签</p>
+              </div>
+
+              {allSubcategoriesItems.length > 0 ? (
+                <div className="space-y-6">
+                  {selectedCategory.subcategories.map(subcategory => {
+                    // 只显示有书签的子分类
+                    if (!subcategory.items || subcategory.items.length === 0) return null;
+
+                    return (
+                      <div key={subcategory.uuid} className="border-l-2 border-primary/30 pl-4 pb-4">
+                        <h4 className="text-md font-medium mb-2 flex items-center">
+                          <div className="w-2 h-2 rounded-full bg-primary/70 mr-2"></div>
+                          {subcategory.name}
+                        </h4>
+                        <BookmarkItemList
+                          items={subcategory.items || []}
+                          isOwner={isOwner}
+                          editMode={editMode}
+                          onEdit={handleEditItem}
+                          onDelete={handleDeleteItem}
+                          onAdd={() => {
+                            // 设置当前子分类并打开添加对话框
+                            setSelectedSubcategoryUuid(subcategory.uuid);
+                            setTimeout(() => handleAddItem(), 100);
+                          }}
+                          compact={true} // 紧凑模式
+                        />
+                      </div>
+                    );
+                  })}
+                </div>
+              ) : (
+                <div className="text-center py-8 border rounded-lg">
+                  <p className="text-muted-foreground">暂无书签，请添加书签</p>
+                </div>
+              )}
+            </div>
           ) : selectedCategory && selectedCategory.subcategories && selectedCategory.subcategories.length === 0 ? (
             <div className="text-center py-8 border rounded-lg">
               <p className="text-muted-foreground">请使用右上角的"添加书签"按钮添加书签，系统会自动创建子分类</p>

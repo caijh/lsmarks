@@ -65,14 +65,44 @@ export function UsernameForm({ currentUsername, onSuccess }: UsernameFormProps) 
         throw new Error(data.message || "修改用户名失败");
       }
 
+      const data = await response.json();
+
       // 成功处理
       toast.success("用户名已更新", {
         description: `您的用户名已成功更新为 ${username}`,
         duration: 3000,
       });
 
+      // 调用成功回调
       onSuccess(username);
+
+      // 关闭对话框
       setOpen(false);
+
+      // 强制刷新会话数据
+      try {
+        // 清除所有会话相关的缓存
+        Object.keys(localStorage).forEach(key => {
+          if (key.startsWith('bookmark_app_') || key.includes('session')) {
+            localStorage.removeItem(key);
+          }
+        });
+
+        // 清除所有会话相关的cookie
+        document.cookie.split(';').forEach(cookie => {
+          const [name] = cookie.trim().split('=');
+          if (name.includes('next-auth') || name.includes('session')) {
+            document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+          }
+        });
+
+        // 延迟刷新页面，确保用户能看到成功提示
+        setTimeout(() => {
+          window.location.reload();
+        }, 1500);
+      } catch (refreshError) {
+        console.error("Error refreshing session:", refreshError);
+      }
     } catch (error) {
       console.error("Error updating username:", error);
       setError(error instanceof Error ? error.message : "修改用户名失败，请稍后再试");

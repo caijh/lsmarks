@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
-import { auth } from "@/auth";
+import { auth, signOut } from "@/auth";
 import { updateUserUsername } from "@/models/user";
+import { cookies } from "next/headers";
 
 export async function POST(request: NextRequest) {
   try {
@@ -39,6 +40,14 @@ export async function POST(request: NextRequest) {
       // 更新用户名
       await updateUserUsername(session.user.uuid, username);
 
+      // 更新会话中的用户名
+      if (session.user) {
+        session.user.username = username;
+      }
+
+      // 在响应中添加清除会话cookie的标志，让前端处理
+      // 注意：服务器端无法直接操作客户端的cookie，所以我们通过响应告诉前端需要刷新
+
       // 如果没有抛出错误，则更新成功
     } catch (error) {
       console.error("Error updating username:", error);
@@ -50,7 +59,11 @@ export async function POST(request: NextRequest) {
 
     // 返回成功响应
     return NextResponse.json(
-      { message: "用户名修改成功", username },
+      {
+        message: "用户名修改成功",
+        username,
+        needsRefresh: true // 添加标志，告诉前端需要刷新页面
+      },
       { status: 200 }
     );
   } catch (error) {

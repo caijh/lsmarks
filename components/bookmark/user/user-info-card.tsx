@@ -23,17 +23,36 @@ export function UserInfoCard() {
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
+  // 添加一个刷新标记，用于强制重新获取用户信息
+  const [refreshTrigger, setRefreshTrigger] = useState(0);
+
+  // 添加一个刷新函数，可以在需要时调用
+  const refreshUserInfo = () => {
+    setRefreshTrigger(prev => prev + 1);
+  };
+
   useEffect(() => {
     const fetchProfile = async () => {
       try {
         setIsLoading(true);
 
-        // 从会话中获取用户信息
-        const sessionResponse = await fetch("/api/auth/session");
+        // 添加时间戳参数，防止浏览器缓存
+        const timestamp = new Date().getTime();
+        const sessionResponse = await fetch(`/api/auth/session?_=${timestamp}`, {
+          // 添加缓存控制头，确保获取最新数据
+          headers: {
+            'Cache-Control': 'no-cache, no-store, must-revalidate',
+            'Pragma': 'no-cache',
+            'Expires': '0'
+          }
+        });
+
         if (sessionResponse.ok) {
           const sessionData = await sessionResponse.json();
 
           if (sessionData && sessionData.user) {
+            console.log("Fetched user profile:", sessionData.user);
+
             const sessionProfile = {
               uuid: sessionData.user.uuid || sessionData.user.id,
               email: sessionData.user.email,
@@ -55,7 +74,9 @@ export function UserInfoCard() {
     };
 
     fetchProfile();
-  }, []);
+
+    // 每次 refreshTrigger 变化时重新获取用户信息
+  }, [refreshTrigger]);
 
   // 格式化日期
   const formatDate = (dateString: string) => {
@@ -217,7 +238,11 @@ export function UserInfoCard() {
               <UsernameForm
                 currentUsername={profile.username}
                 onSuccess={(newUsername) => {
+                  // 更新本地状态
                   setProfile(prev => prev ? { ...prev, username: newUsername } : null);
+
+                  // 触发刷新用户信息
+                  refreshUserInfo();
                 }}
               />
             </div>
