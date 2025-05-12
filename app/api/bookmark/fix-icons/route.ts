@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getSupabaseClient, releaseSupabaseClient } from "@/models/db";
 import { getCurrentUserUuid } from "@/services/bookmark/auth";
+import { PostgrestSingleResponse } from "@supabase/supabase-js";
 
 /**
  * 修复数据库中的图标URL，将Google的图标URL替换为toicons.pages.dev的URL
@@ -28,7 +29,7 @@ export async function POST(request: NextRequest) {
       }
 
       // 需要更新的书签
-      const bookmarksToUpdate = bookmarks.filter(bookmark => 
+      const bookmarksToUpdate = bookmarks.filter(bookmark =>
         bookmark.icon_url && (
           bookmark.icon_url.includes('google.com/s2/favicons') ||
           bookmark.icon_url.includes('gstatic.com/faviconV2') ||
@@ -61,21 +62,27 @@ export async function POST(request: NextRequest) {
 
       // 执行所有更新
       const updateResults = await Promise.all(updatePromises);
-      
+
       // 检查更新结果
-      const errors = updateResults.filter(result => result.error);
-      if (errors.length > 0) {
-        console.error("Errors during icon URL updates:", errors);
-        return NextResponse.json({ 
-          message: "Some updates failed", 
-          updated: bookmarksToUpdate.length - errors.length,
-          failed: errors.length 
+      const errorsCount = updateResults.reduce((count, result) => {
+        if (result && result.error) {
+          console.error("Error updating bookmark:", result.error);
+          return count + 1;
+        }
+        return count;
+      }, 0);
+
+      if (errorsCount > 0) {
+        return NextResponse.json({
+          message: "Some updates failed",
+          updated: bookmarksToUpdate.length - errorsCount,
+          failed: errorsCount
         }, { status: 207 });
       }
 
-      return NextResponse.json({ 
-        message: "Successfully updated all icon URLs", 
-        updated: bookmarksToUpdate.length 
+      return NextResponse.json({
+        message: "Successfully updated all icon URLs",
+        updated: bookmarksToUpdate.length
       });
     } finally {
       releaseSupabaseClient(supabase);
