@@ -49,14 +49,23 @@ export function FallbackIcon({
     `https://toicons.pages.dev/api/favicon?domain=${domain}&favicon&size=64`,
     `https://toicons.pages.dev/api/favicon?domain=${domain}&google&size=64`,
     `https://toicons.pages.dev/api/favicon?domain=${domain}&true&size=64`,
-    `https://favicon.im/${domain}?larger=true`
+    `https://favicon.im/${domain}?larger=true`,
+    // 最后添加默认图标，当所有其他图标都失败时使用
+    "/images/icon/default-icon.svg"
   ].filter(Boolean) as string[]; // 过滤掉undefined和null
 
   // 处理图标加载错误
   const handleError = () => {
+    // 记录当前失败的图标URL
+    console.debug(`图标加载失败: ${iconUrls[currentIconIndex]}`);
+
     // 尝试下一个图标URL
     if (currentIconIndex < iconUrls.length - 1) {
       setCurrentIconIndex(currentIconIndex + 1);
+    } else {
+      // 所有图标都失败了，确保使用默认图标
+      console.debug('所有图标源都失败了，使用默认图标');
+      // 这里不需要额外操作，因为默认图标已经是数组的最后一项
     }
   };
 

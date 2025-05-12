@@ -31,9 +31,9 @@ export function generateIconUrl(url: string, size: number = 64): string {
     // 备选方案3: 直接使用网站的 favicon.ico
     // return `https://${domain}/favicon.ico`;
   } catch (error) {
-    // 如果URL无效，返回空字符串
+    // 如果URL无效，返回默认图标
     console.error("Invalid URL, cannot generate icon URL:", error);
-    return "";
+    return "/images/icon/default-icon.svg";
   }
 }
 
@@ -78,8 +78,8 @@ export function generateFallbackIconUrls(url: string, size: number = 64): string
       `https://${domain}/favicon.ico`
     ];
   } catch (error) {
-    // 如果URL无效，返回空数组
+    // 如果URL无效，返回包含默认图标的数组
     console.error("Invalid URL, cannot generate fallback icon URLs:", error);
-    return [];
+    return ["/images/icon/default-icon.svg"];
   }
 }
