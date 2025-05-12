@@ -4,10 +4,12 @@ import { useState, useEffect } from "react";
 import { Card } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Skeleton } from "@/components/ui/skeleton";
-import { User, Calendar, Star } from "lucide-react";
+import { User, Calendar, Star, RefreshCw } from "lucide-react";
 import { UserLevelBadge } from "@/components/user/user-level-badge";
 import { UserLevelEnum, getUserLevelInfo } from "@/types/user/level";
 import { UsernameForm } from "./username-form";
+import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
 
 interface UserProfile {
   uuid: string;
@@ -22,6 +24,7 @@ interface UserProfile {
 export function UserInfoCard() {
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [isFixingIcons, setIsFixingIcons] = useState(false);
 
   // 添加一个刷新标记，用于强制重新获取用户信息
   const [refreshTrigger, setRefreshTrigger] = useState(0);
@@ -29,6 +32,33 @@ export function UserInfoCard() {
   // 添加一个刷新函数，可以在需要时调用
   const refreshUserInfo = () => {
     setRefreshTrigger(prev => prev + 1);
+  };
+
+  // 修复图标URL的函数
+  const fixIconUrls = async () => {
+    try {
+      setIsFixingIcons(true);
+
+      const response = await fetch('/api/bookmark/fix-icons', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        toast.success(`成功修复了 ${result.updated} 个图标URL`);
+      } else {
+        const error = await response.json();
+        toast.error(`修复图标失败: ${error.error || '未知错误'}`);
+      }
+    } catch (error) {
+      console.error('修复图标时出错:', error);
+      toast.error('修复图标时出错，请稍后再试');
+    } finally {
+      setIsFixingIcons(false);
+    }
   };
 
   useEffect(() => {
@@ -283,8 +313,20 @@ export function UserInfoCard() {
               </span>
             </div>
 
-            <div className="text-xs opacity-70 hidden sm:block ml-auto">
-              用户名是您的唯一标识，用于生成您的个人链接
+            <div className="flex items-center gap-2 ml-auto">
+              <div className="text-xs opacity-70 hidden sm:block">
+                用户名是您的唯一标识，用于生成您的个人链接
+              </div>
+              <Button
+                variant="outline"
+                size="sm"
+                className="h-7 text-xs ml-auto"
+                onClick={fixIconUrls}
+                disabled={isFixingIcons}
+              >
+                <RefreshCw className={`h-3 w-3 mr-1 ${isFixingIcons ? 'animate-spin' : ''}`} />
+                修复图标
+              </Button>
             </div>
           </div>
         </div>
