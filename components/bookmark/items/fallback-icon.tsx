@@ -33,7 +33,8 @@ export function FallbackIcon({
   // 初始化备选URL列表
   useEffect(() => {
     if (url) {
-      const urls = generateFallbackIconUrls(url);
+      // 使用64像素大小的图标
+      const urls = generateFallbackIconUrls(url, 64);
       setFallbackUrls(urls);
 
       // 如果没有提供初始图标URL，使用第一个备选URL
