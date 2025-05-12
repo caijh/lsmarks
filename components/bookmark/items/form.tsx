@@ -86,8 +86,12 @@ export function BookmarkItemForm({
 
   // 处理图标URL生成结果
   const handleIconUrlGenerated = useCallback((iconUrl: string) => {
-    // 设置图标URL
-    if (iconUrl && (form.getValues("icon_url") === "" || urlChanged)) {
+    // 确保不使用可能导致CORS错误的Google图标URL
+    if (iconUrl &&
+        (form.getValues("icon_url") === "" || urlChanged) &&
+        !iconUrl.includes('google.com/s2/favicons') &&
+        !iconUrl.includes('gstatic.com/faviconV2') &&
+        !iconUrl.includes('www.google.com')) {
       form.setValue("icon_url", iconUrl);
     }
 

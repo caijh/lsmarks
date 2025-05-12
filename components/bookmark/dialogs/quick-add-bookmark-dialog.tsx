@@ -181,7 +181,11 @@ export function QuickAddBookmarkDialog({
 
   // 处理图标URL生成结果
   const handleIconUrlGenerated = (iconUrl: string) => {
-    if (iconUrl && form && !form.getValues("icon_url")) {
+    // 确保不使用可能导致CORS错误的Google图标URL
+    if (iconUrl && form && !form.getValues("icon_url") &&
+        !iconUrl.includes('google.com/s2/favicons') &&
+        !iconUrl.includes('gstatic.com/faviconV2') &&
+        !iconUrl.includes('www.google.com')) {
       form.setValue("icon_url", iconUrl);
     }
   };
