@@ -36,9 +36,9 @@ export function UserInfoCard() {
       try {
         setIsLoading(true);
 
-        // 添加时间戳参数，防止浏览器缓存
+        // 使用新的API路由获取最新的用户信息
         const timestamp = new Date().getTime();
-        const sessionResponse = await fetch(`/api/auth/session?_=${timestamp}`, {
+        const profileResponse = await fetch(`/api/user/profile?_=${timestamp}`, {
           // 添加缓存控制头，确保获取最新数据
           headers: {
             'Cache-Control': 'no-cache, no-store, must-revalidate',
@@ -47,23 +47,52 @@ export function UserInfoCard() {
           }
         });
 
-        if (sessionResponse.ok) {
-          const sessionData = await sessionResponse.json();
+        if (profileResponse.ok) {
+          const userData = await profileResponse.json();
+          console.log("Fetched user profile from API:", userData);
 
-          if (sessionData && sessionData.user) {
-            console.log("Fetched user profile:", sessionData.user);
-
-            const sessionProfile = {
-              uuid: sessionData.user.uuid || sessionData.user.id,
-              email: sessionData.user.email,
-              nickname: sessionData.user.nickname || sessionData.user.name || sessionData.user.email.split('@')[0],
-              username: sessionData.user.username || sessionData.user.nickname || sessionData.user.email.split('@')[0],
-              avatar_url: sessionData.user.avatar_url || sessionData.user.image,
-              user_level: sessionData.user.user_level || "1",
-              created_at: sessionData.user.created_at || new Date().toISOString()
+          if (userData) {
+            const userProfile = {
+              uuid: userData.uuid,
+              email: userData.email,
+              nickname: userData.nickname || userData.email.split('@')[0],
+              username: userData.username || userData.nickname || userData.email.split('@')[0],
+              avatar_url: userData.avatar_url,
+              user_level: userData.user_level || "1",
+              created_at: userData.created_at || new Date().toISOString()
             };
 
-            setProfile(sessionProfile);
+            setProfile(userProfile);
+          }
+        } else {
+          // 如果新API失败，回退到旧方法
+          console.warn("Failed to fetch from new API, falling back to session API");
+          const sessionResponse = await fetch(`/api/auth/session?_=${timestamp}`, {
+            headers: {
+              'Cache-Control': 'no-cache, no-store, must-revalidate',
+              'Pragma': 'no-cache',
+              'Expires': '0'
+            }
+          });
+
+          if (sessionResponse.ok) {
+            const sessionData = await sessionResponse.json();
+
+            if (sessionData && sessionData.user) {
+              console.log("Fetched user profile from session:", sessionData.user);
+
+              const sessionProfile = {
+                uuid: sessionData.user.uuid || sessionData.user.id,
+                email: sessionData.user.email,
+                nickname: sessionData.user.nickname || sessionData.user.name || sessionData.user.email.split('@')[0],
+                username: sessionData.user.username || sessionData.user.nickname || sessionData.user.email.split('@')[0],
+                avatar_url: sessionData.user.avatar_url || sessionData.user.image,
+                user_level: sessionData.user.user_level || "1",
+                created_at: sessionData.user.created_at || new Date().toISOString()
+              };
+
+              setProfile(sessionProfile);
+            }
           }
         }
       } catch (error) {

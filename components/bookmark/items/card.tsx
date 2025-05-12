@@ -57,7 +57,7 @@ export function BookmarkItemCard({
   return (
     <Card className={`overflow-hidden h-full flex flex-col relative group bg-card/65 backdrop-blur-sm
       ${!isReadOnly ? 'hover:shadow-md transition-all duration-200 hover:-translate-y-1' : ''}
-      ${compact ? 'p-0 border-border/40' : ''}
+      ${compact ? 'p-0 border-border/40 hover:border-primary/30' : ''}
       ${className}`}>
       {/* 右上角的操作菜单 - 只在非只读模式下显示 */}
       {!isReadOnly && (
@@ -116,9 +116,9 @@ export function BookmarkItemCard({
         </a>
       )}
 
-      <CardContent className={`flex-grow ${compact ? 'p-2' : 'p-3'} z-10 relative pointer-events-none`}>
+      <CardContent className={`flex-grow ${compact ? 'p-3' : 'p-3'} z-10 relative pointer-events-none`}>
         <div className="flex items-start gap-2">
-          <div className={`flex-shrink-0 ${compact ? 'w-6 h-6' : 'w-8 h-8'} relative bg-background rounded-md p-1 border flex items-center justify-center pointer-events-auto`}>
+          <div className={`flex-shrink-0 ${compact ? 'w-7 h-7' : 'w-8 h-8'} relative bg-background rounded-md p-1 border flex items-center justify-center pointer-events-auto`}>
             {icon_url ? (
               <>
                 <img
@@ -126,7 +126,7 @@ export function BookmarkItemCard({
                   alt={title}
                   width={24}
                   height={24}
-                  className={`object-contain ${compact ? 'w-4 h-4' : 'w-6 h-6'}`}
+                  className={`object-contain ${compact ? 'w-5 h-5' : 'w-6 h-6'}`}
                   onError={(e) => {
                     // 图片加载失败时，设置一个标志以显示默认图标
                     (e.target as HTMLImageElement).style.display = 'none';
@@ -150,7 +150,7 @@ export function BookmarkItemCard({
                     alt={locale === 'zh' ? "默认书签图标" : "Default bookmark icon"}
                     width={24}
                     height={24}
-                    className={`object-contain ${compact ? 'w-4 h-4' : 'w-6 h-6'}`}
+                    className={`object-contain ${compact ? 'w-5 h-5' : 'w-6 h-6'}`}
                   />
                 </span>
               </>
@@ -160,12 +160,12 @@ export function BookmarkItemCard({
                 alt={locale === 'zh' ? "默认书签图标" : "Default bookmark icon"}
                 width={24}
                 height={24}
-                className={`object-contain ${compact ? 'w-4 h-4' : 'w-6 h-6'}`}
+                className={`object-contain ${compact ? 'w-5 h-5' : 'w-6 h-6'}`}
               />
             )}
           </div>
           <div className="flex-grow min-w-0">
-            <h3 className={`${compact ? 'text-xs' : 'text-sm'} font-medium truncate pointer-events-auto`}>
+            <h3 className={`${compact ? 'text-sm' : 'text-sm'} font-medium truncate pointer-events-auto`}>
               <a
                 href={url}
                 target="_blank"
@@ -177,7 +177,7 @@ export function BookmarkItemCard({
               </a>
             </h3>
             <div className="flex items-center flex-wrap gap-1 mt-0.5">
-              <span className={`${compact ? 'text-[10px]' : 'text-xs'} text-muted-foreground truncate pointer-events-auto`}>
+              <span className={`${compact ? 'text-xs' : 'text-xs'} text-muted-foreground truncate pointer-events-auto`}>
                 <a
                   href={url}
                   target="_blank"

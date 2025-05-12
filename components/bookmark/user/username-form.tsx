@@ -96,9 +96,19 @@ export function UsernameForm({ currentUsername, onSuccess }: UsernameFormProps) 
           }
         });
 
+        // 清除浏览器缓存的API响应
+        if ('caches' in window) {
+          caches.keys().then(cacheNames => {
+            cacheNames.forEach(cacheName => {
+              caches.delete(cacheName);
+            });
+          });
+        }
+
         // 延迟刷新页面，确保用户能看到成功提示
         setTimeout(() => {
-          window.location.reload();
+          // 使用强制刷新，确保所有缓存都被清除
+          window.location.href = window.location.href + '?refresh=' + new Date().getTime();
         }, 1500);
       } catch (refreshError) {
         console.error("Error refreshing session:", refreshError);

@@ -708,21 +708,24 @@ export function CollectionDetailView({
           ) : selectedCategory && selectedCategory.subcategories && selectedCategory.subcategories.length > 0 && !selectedSubcategoryUuid ? (
             // 显示所有子分类的书签（当选择"全部"时）
             <div>
-              <div className="mb-4 pb-2 border-b">
-                <h3 className="text-lg font-medium">所有书签</h3>
-                <p className="text-sm text-muted-foreground">显示所有子分类的书签</p>
+              <div className="mb-5 pb-2 border-b">
+                <h3 className="text-lg font-medium flex items-center">
+                  <div className="w-3 h-3 rounded-full bg-primary mr-2"></div>
+                  所有书签
+                </h3>
+                <p className="text-sm text-muted-foreground mt-1">显示所有子分类的书签，每行显示5列</p>
               </div>
 
               {allSubcategoriesItems.length > 0 ? (
-                <div className="space-y-6">
+                <div className="space-y-8">
                   {selectedCategory.subcategories.map(subcategory => {
                     // 只显示有书签的子分类
                     if (!subcategory.items || subcategory.items.length === 0) return null;
 
                     return (
-                      <div key={subcategory.uuid} className="border-l-2 border-primary/30 pl-4 pb-4">
-                        <h4 className="text-md font-medium mb-2 flex items-center">
-                          <div className="w-2 h-2 rounded-full bg-primary/70 mr-2"></div>
+                      <div key={subcategory.uuid} className="border-l-2 border-primary/40 pl-4 pb-6 mb-2">
+                        <h4 className="text-md font-medium mb-3 flex items-center bg-primary/10 p-2 rounded-md">
+                          <div className="w-3 h-3 rounded-full bg-primary/70 mr-2"></div>
                           {subcategory.name}
                         </h4>
                         <BookmarkItemList
