@@ -52,7 +52,8 @@ export async function POST(request: NextRequest) {
         }
 
         // 使用toicons.pages.dev替换Google的图标URL
-        const newIconUrl = `https://toicons.pages.dev/api/favicon?domain=${domain}&size=64`;
+        // 使用较小的尺寸，避免413错误
+        const newIconUrl = `https://toicons.pages.dev/api/favicon?domain=${domain}&size=32`;
 
         return supabase
           .from("bookmark_items")

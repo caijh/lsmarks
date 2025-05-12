@@ -17,8 +17,9 @@ export function generateIconUrl(url: string, size: number = 64): string {
 
     // 使用 toicons.pages.dev 服务获取图标
     // 这个服务在国内访问速度更快，并且提供了多种尺寸和格式的图标
+    // 使用较小的尺寸，避免413错误
     // 使用正确的链接格式，并添加大小参数
-    return `https://toicons.pages.dev/api/favicon?domain=${domain}&size=${size}`;
+    return `https://toicons.pages.dev/api/favicon?domain=${domain}&size=${Math.min(size, 32)}`;
 
     // 以下是备选方案，如果上面的服务不可用，可以取消注释使用：
 
@@ -54,25 +55,31 @@ export function generateFallbackIconUrls(url: string, size: number = 64): string
     const urlObj = new URL(url);
     const domain = urlObj.hostname;
 
+    // 限制图标尺寸，避免413错误
+    const safeSize = Math.min(size, 32);
+
     // 返回多个备选图标URL，优先使用 toicons.pages.dev 服务
     return [
       // 首选 toicons.pages.dev 服务，标准模式
-      `https://toicons.pages.dev/api/favicon?domain=${domain}&size=${size}`,
+      `https://toicons.pages.dev/api/favicon?domain=${domain}&size=${safeSize}`,
 
       // 备选 favicon.im 服务
-      `https://favicon.im/${domain}?larger=true`,
+      `https://favicon.im/${domain}`,
 
       // 使用 toicons 代理 Google 的 FaviconV2 服务，避免CORS错误
-      `https://toicons.pages.dev/api/favicon?domain=${domain}&googlev2&size=${size}`,
+      `https://toicons.pages.dev/api/favicon?domain=${domain}&googlev2&size=${safeSize}`,
 
       // 备选 toicons.pages.dev 服务，使用Google源
-      `https://toicons.pages.dev/api/favicon?domain=${domain}&google&size=${size}`,
+      `https://toicons.pages.dev/api/favicon?domain=${domain}&google&size=${safeSize}`,
 
       // 备选 toicons.pages.dev 服务，使用favicon源
-      `https://toicons.pages.dev/api/favicon?domain=${domain}&favicon&size=${size}`,
+      `https://toicons.pages.dev/api/favicon?domain=${domain}&favicon&size=${safeSize}`,
 
       // 备选 toicons.pages.dev 服务，直接从网站获取
-      `https://toicons.pages.dev/api/favicon?domain=${domain}&true&size=${size}`,
+      `https://toicons.pages.dev/api/favicon?domain=${domain}&true&size=${safeSize}`,
+
+      // 尝试使用DuckDuckGo的图标服务
+      `https://icons.duckduckgo.com/ip3/${domain}.ico`,
 
       // 直接使用网站的 favicon.ico
       `https://${domain}/favicon.ico`

@@ -44,12 +44,31 @@ export function FallbackIcon({
   // 生成多个图标URL
   const domain = extractDomain(url);
   const iconUrls = [
+    // 首先使用提供的初始图标URL
     initialIconUrl,
-    `https://toicons.pages.dev/api/favicon?domain=${domain}&size=64`,
-    `https://toicons.pages.dev/api/favicon?domain=${domain}&favicon&size=64`,
-    `https://toicons.pages.dev/api/favicon?domain=${domain}&google&size=64`,
-    `https://toicons.pages.dev/api/favicon?domain=${domain}&true&size=64`,
-    `https://favicon.im/${domain}?larger=true`,
+
+    // 尝试使用不同的图标服务和参数
+    // 使用较小的尺寸，避免413错误
+    `https://toicons.pages.dev/api/favicon?domain=${domain}&size=32`,
+
+    // 尝试使用favicon参数
+    `https://toicons.pages.dev/api/favicon?domain=${domain}&favicon&size=32`,
+
+    // 尝试使用google参数
+    `https://toicons.pages.dev/api/favicon?domain=${domain}&google&size=32`,
+
+    // 尝试使用true参数
+    `https://toicons.pages.dev/api/favicon?domain=${domain}&true&size=32`,
+
+    // 尝试使用favicon.im服务
+    `https://favicon.im/${domain}`,
+
+    // 尝试直接从网站获取favicon.ico
+    `https://${domain}/favicon.ico`,
+
+    // 尝试使用DuckDuckGo的图标服务
+    `https://icons.duckduckgo.com/ip3/${domain}.ico`,
+
     // 最后添加默认图标，当所有其他图标都失败时使用
     "/images/icon/default-icon.svg"
   ].filter(Boolean) as string[]; // 过滤掉undefined和null
