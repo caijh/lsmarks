@@ -8,6 +8,7 @@ import { ThemeProvider } from "@/contexts/theme-context";
 import { DataProvider } from "@/providers/data-provider";
 import { CollectionProvider } from "@/contexts/collection-context";
 import { EditModeProvider } from "@/contexts/edit-mode-context";
+import { IconInterceptorProvider } from "@/components/providers/icon-interceptor-provider";
 import { cn } from "@/lib/utils";
 import { NavigationWrapper } from "@/components/bookmark/layout/navigation-wrapper";
 import { auth } from "@/auth";
@@ -43,13 +44,15 @@ export default async function RootLayout({
         <DataProvider>
           <AppContextProvider>
             <ThemeProvider>
-              <CollectionProvider>
-                <EditModeProvider>
-                  <NavigationWrapper user={session?.user}>
-                    {children}
-                  </NavigationWrapper>
-                </EditModeProvider>
-              </CollectionProvider>
+              <IconInterceptorProvider>
+                <CollectionProvider>
+                  <EditModeProvider>
+                    <NavigationWrapper user={session?.user}>
+                      {children}
+                    </NavigationWrapper>
+                  </EditModeProvider>
+                </CollectionProvider>
+              </IconInterceptorProvider>
             </ThemeProvider>
           </AppContextProvider>
         </DataProvider>
