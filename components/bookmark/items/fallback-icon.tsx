@@ -63,6 +63,8 @@ export function FallbackIcon({
     // 记录错误
     console.debug(`图标加载失败: ${currentIconUrl}`);
     setHasError(true);
+    // 重要：设置isLoading为false，因为加载已经完成（虽然是失败的）
+    setIsLoading(false);
 
     // 检查当前URL是否是直接的favicon.ico
     const isFaviconIco = currentIconUrl.includes('/favicon.ico');
@@ -83,6 +85,8 @@ export function FallbackIcon({
           setCurrentIconUrl(fallbackUrls[fallbackIndex]);
           setFallbackIndex(fallbackIndex + 1);
           setHasError(false);
+          // 重新设置为加载中状态
+          setIsLoading(true);
         }, 0);
       } else {
         // 所有备选都失败，使用默认图标
@@ -101,6 +105,8 @@ export function FallbackIcon({
         setCurrentIconUrl(fallbackUrls[fallbackIndex]);
         setFallbackIndex(fallbackIndex + 1);
         setHasError(false);
+        // 重新设置为加载中状态
+        setIsLoading(true);
       }, delayTime);
     } else {
       // 所有备选都失败，使用默认图标
@@ -114,31 +120,32 @@ export function FallbackIcon({
     setHasError(false);
   };
 
+  // 调试输出
+  useEffect(() => {
+    console.debug(`FallbackIcon state: isLoading=${isLoading}, hasError=${hasError}, currentIconUrl=${currentIconUrl}`);
+  }, [isLoading, hasError, currentIconUrl]);
+
   return (
     <div className="relative w-full h-full flex items-center justify-center">
       {/* 使用绝对定位确保图标不会叠加 */}
       <div className="absolute inset-0 flex items-center justify-center">
-        {/* 条件渲染：如果图标加载中或加载失败，显示默认图标；否则显示当前图标 */}
-        {isLoading || hasError ? (
+        {/* 始终渲染当前图标，但在加载中或加载失败时隐藏它 */}
+        {currentIconUrl && (
           <img
-            src={defaultIcon}
-            alt={title}
-            width={24}
-            height={24}
-            className={`object-contain ${compact ? 'w-5 h-5' : 'w-6 h-6'} ${className}`}
-          />
-        ) : currentIconUrl ? (
-          <img
+            key={currentIconUrl}
             src={currentIconUrl}
             alt={title}
             width={24}
             height={24}
-            className={`object-contain ${compact ? 'w-5 h-5' : 'w-6 h-6'} ${className}`}
+            className={`object-contain ${compact ? 'w-5 h-5' : 'w-6 h-6'} ${className} ${isLoading || hasError ? 'hidden' : ''}`}
             onError={handleError}
             onLoad={handleLoad}
             crossOrigin="anonymous"
           />
-        ) : (
+        )}
+
+        {/* 在加载中或加载失败时显示默认图标 */}
+        {(isLoading || hasError || !currentIconUrl) && (
           <img
             src={defaultIcon}
             alt={title}
