@@ -116,30 +116,38 @@ export function FallbackIcon({
 
   return (
     <div className="relative w-full h-full flex items-center justify-center">
-      {/* 当图标加载中或加载失败时显示默认图标 */}
-      {(isLoading || hasError) && (
-        <img
-          src={defaultIcon}
-          alt={title}
-          width={24}
-          height={24}
-          className={`object-contain ${compact ? 'w-5 h-5' : 'w-6 h-6'} ${className} absolute inset-0 z-10`}
-        />
-      )}
-
-      {/* 当前图标 - 始终在底层渲染，但在加载失败时被默认图标覆盖 */}
-      {currentIconUrl && (
-        <img
-          src={currentIconUrl}
-          alt={title}
-          width={24}
-          height={24}
-          className={`object-contain ${compact ? 'w-5 h-5' : 'w-6 h-6'} ${className}`}
-          onError={handleError}
-          onLoad={handleLoad}
-          crossOrigin="anonymous"
-        />
-      )}
+      {/* 使用绝对定位确保图标不会叠加 */}
+      <div className="absolute inset-0 flex items-center justify-center">
+        {/* 条件渲染：如果图标加载中或加载失败，显示默认图标；否则显示当前图标 */}
+        {isLoading || hasError ? (
+          <img
+            src={defaultIcon}
+            alt={title}
+            width={24}
+            height={24}
+            className={`object-contain ${compact ? 'w-5 h-5' : 'w-6 h-6'} ${className}`}
+          />
+        ) : currentIconUrl ? (
+          <img
+            src={currentIconUrl}
+            alt={title}
+            width={24}
+            height={24}
+            className={`object-contain ${compact ? 'w-5 h-5' : 'w-6 h-6'} ${className}`}
+            onError={handleError}
+            onLoad={handleLoad}
+            crossOrigin="anonymous"
+          />
+        ) : (
+          <img
+            src={defaultIcon}
+            alt={title}
+            width={24}
+            height={24}
+            className={`object-contain ${compact ? 'w-5 h-5' : 'w-6 h-6'} ${className}`}
+          />
+        )}
+      </div>
     </div>
   );
 }
