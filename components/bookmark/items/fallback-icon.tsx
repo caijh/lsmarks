@@ -35,15 +35,19 @@ export function FallbackIcon({
     if (url) {
       // 使用64像素大小的图标
       const urls = generateFallbackIconUrls(url, 64);
-      setFallbackUrls(urls);
+
+      // 不再需要过滤Google的URL，因为我们现在使用toicons代理
+      const filteredUrls = urls;
+
+      setFallbackUrls(filteredUrls);
 
       // 如果没有提供初始图标URL，使用第一个备选URL
-      if (!initialIconUrl && urls.length > 0) {
-        setCurrentIconUrl(urls[0]);
+      if (!initialIconUrl && filteredUrls.length > 0) {
+        setCurrentIconUrl(filteredUrls[0]);
         setFallbackIndex(1); // 下一个备选索引
       } else if (initialIconUrl) {
         // 如果提供了初始图标URL，从备选列表中找到它的位置
-        const index = urls.indexOf(initialIconUrl);
+        const index = filteredUrls.indexOf(initialIconUrl);
         setFallbackIndex(index >= 0 ? index + 1 : 0);
       }
     }
@@ -55,14 +59,20 @@ export function FallbackIcon({
     console.debug(`图标加载失败: ${currentIconUrl}`);
     setHasError(true);
 
+    // 检查当前URL是否是直接的favicon.ico
+    const isFaviconIco = currentIconUrl.includes('/favicon.ico');
+
     // 尝试加载下一个备选图标
     if (fallbackIndex < fallbackUrls.length) {
       // 添加延迟，避免快速连续请求
+      // 如果是favicon.ico失败，增加延迟时间，因为这通常意味着网站可能没有图标
+      const delayTime = isFaviconIco ? 300 : 100;
+
       setTimeout(() => {
         setCurrentIconUrl(fallbackUrls[fallbackIndex]);
         setFallbackIndex(fallbackIndex + 1);
         setHasError(false);
-      }, 100);
+      }, delayTime);
     } else {
       // 所有备选都失败，使用默认图标
       setCurrentIconUrl(defaultIcon);

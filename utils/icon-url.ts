@@ -58,16 +58,25 @@ export function generateFallbackIconUrls(url: string, size: number = 64): string
     return [
       // 首选 toicons.pages.dev 服务，标准模式
       `https://toicons.pages.dev/api/favicon?domain=${domain}&size=${size}`,
+
+      // 备选 favicon.im 服务
+      `https://favicon.im/${domain}?larger=true`,
+
+      // 备选 Google 的 FaviconV2 服务
+      `https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=${domain}&size=${size}`,
+
       // 备选 toicons.pages.dev 服务，使用Google源
       `https://toicons.pages.dev/api/favicon?domain=${domain}&google&size=${size}`,
+
       // 备选 toicons.pages.dev 服务，使用favicon源
       `https://toicons.pages.dev/api/favicon?domain=${domain}&favicon&size=${size}`,
+
       // 备选 toicons.pages.dev 服务，直接从网站获取
       `https://toicons.pages.dev/api/favicon?domain=${domain}&true&size=${size}`,
+
       // 直接使用网站的 favicon.ico
       `https://${domain}/favicon.ico`,
-      // 候补使用谷歌的图标服务（虽然可能在国内访问慢，但作为最后备选）
-      `https://www.google.com/s2/favicons?domain=${domain}&sz=${size}`,
+
       // 默认图标
       "/images/icon/loading-bookmark-icon.svg"
     ];
