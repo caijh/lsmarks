@@ -62,8 +62,8 @@ export function generateFallbackIconUrls(url: string, size: number = 64): string
       // 备选 favicon.im 服务
       `https://favicon.im/${domain}?larger=true`,
 
-      // 备选 Google 的 FaviconV2 服务
-      `https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=${domain}&size=${size}`,
+      // 使用 toicons 代理 Google 的 FaviconV2 服务，避免CORS错误
+      `https://toicons.pages.dev/api/favicon?domain=${domain}&googlev2&size=${size}`,
 
       // 备选 toicons.pages.dev 服务，使用Google源
       `https://toicons.pages.dev/api/favicon?domain=${domain}&google&size=${size}`,

@@ -36,8 +36,13 @@ export function FallbackIcon({
       // 使用64像素大小的图标
       const urls = generateFallbackIconUrls(url, 64);
 
-      // 不再需要过滤Google的URL，因为我们现在使用toicons代理
-      const filteredUrls = urls;
+      // 过滤掉可能导致CORS错误的URL
+      const filteredUrls = urls.filter(url => {
+        // 排除直接访问Google的图标服务，因为它会导致CORS错误
+        return !url.includes('google.com/s2/favicons') &&
+               !url.includes('gstatic.com/faviconV2') &&
+               !url.includes('www.google.com');
+      });
 
       setFallbackUrls(filteredUrls);
 
@@ -61,6 +66,30 @@ export function FallbackIcon({
 
     // 检查当前URL是否是直接的favicon.ico
     const isFaviconIco = currentIconUrl.includes('/favicon.ico');
+
+    // 检查是否是Google的图标服务
+    const isGoogleService =
+      currentIconUrl.includes('google.com/s2/favicons') ||
+      currentIconUrl.includes('gstatic.com/faviconV2') ||
+      currentIconUrl.includes('www.google.com');
+
+    // 如果是Google的图标服务，直接跳过，不要尝试
+    if (isGoogleService) {
+      console.debug('跳过Google图标服务，避免CORS错误');
+
+      // 如果还有下一个备选图标，直接尝试下一个
+      if (fallbackIndex < fallbackUrls.length) {
+        setTimeout(() => {
+          setCurrentIconUrl(fallbackUrls[fallbackIndex]);
+          setFallbackIndex(fallbackIndex + 1);
+          setHasError(false);
+        }, 0);
+      } else {
+        // 所有备选都失败，使用默认图标
+        setCurrentIconUrl(defaultIcon);
+      }
+      return;
+    }
 
     // 尝试加载下一个备选图标
     if (fallbackIndex < fallbackUrls.length) {

@@ -13,8 +13,8 @@ export function IconUrlGenerator({ url, onIconUrlGenerated }: IconUrlGeneratorPr
   useEffect(() => {
     if (url && url.trim() !== "") {
       // 使用工具函数生成图标URL
-      // 注意：我们仍然使用单一URL而不是备选URL列表，因为FallbackIcon组件会处理备选逻辑
-      const iconUrl = generateIconUrl(url);
+      // 使用toicons.pages.dev服务，避免CORS错误
+      const iconUrl = generateIconUrl(url, 64);
 
       // 回调函数返回图标URL
       onIconUrlGenerated(iconUrl);
@@ -35,7 +35,8 @@ export function MetadataFetcher({ url, onMetadataFetched }: MetadataFetcherProps
   useEffect(() => {
     if (url && url.trim() !== "") {
       // 生成图标URL
-      const icon_url = generateIconUrl(url);
+      // 使用toicons.pages.dev服务，避免CORS错误
+      const icon_url = generateIconUrl(url, 64);
 
       // 尝试提取标题
       let title = url;
