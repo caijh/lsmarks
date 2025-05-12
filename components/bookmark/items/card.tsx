@@ -14,7 +14,6 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useDefaultIcon } from "@/hooks/use-default-icon";
 import { FallbackIcon } from "@/components/bookmark/items/fallback-icon";
 
 interface BookmarkItemCardProps {
@@ -41,7 +40,6 @@ export function BookmarkItemCard({
   // 硬编码为中文
   const locale = 'zh';
   const { title, url, description, icon_url, add_count } = item;
-  const { defaultIcon } = useDefaultIcon();
 
   // 提取域名用于显示
   const getDomain = (url: string) => {
@@ -120,12 +118,11 @@ export function BookmarkItemCard({
       <CardContent className={`flex-grow ${compact ? 'p-3' : 'p-3'} z-10 relative pointer-events-none`}>
         <div className="flex items-start gap-2">
           <div className={`flex-shrink-0 ${compact ? 'w-7 h-7' : 'w-8 h-8'} relative bg-background rounded-md p-1 border flex items-center justify-center pointer-events-auto`}>
-            {/* 使用新的FallbackIcon组件，支持多个备选图标源 */}
+            {/* 使用改进后的FallbackIcon组件 */}
             <FallbackIcon
               url={url}
               title={title}
               initialIconUrl={icon_url}
-              defaultIcon={defaultIcon}
               compact={compact}
             />
           </div>

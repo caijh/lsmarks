@@ -31,9 +31,9 @@ export function generateIconUrl(url: string, size: number = 64): string {
     // 备选方案3: 直接使用网站的 favicon.ico
     // return `https://${domain}/favicon.ico`;
   } catch (error) {
-    // 如果URL无效，返回默认图标
+    // 如果URL无效，返回空字符串
     console.error("Invalid URL, cannot generate icon URL:", error);
-    return "/images/icon/loading-bookmark-icon.svg";
+    return "";
   }
 }
 
@@ -75,14 +75,11 @@ export function generateFallbackIconUrls(url: string, size: number = 64): string
       `https://toicons.pages.dev/api/favicon?domain=${domain}&true&size=${size}`,
 
       // 直接使用网站的 favicon.ico
-      `https://${domain}/favicon.ico`,
-
-      // 默认图标
-      "/images/icon/loading-bookmark-icon.svg"
+      `https://${domain}/favicon.ico`
     ];
   } catch (error) {
-    // 如果URL无效，返回默认图标
+    // 如果URL无效，返回空数组
     console.error("Invalid URL, cannot generate fallback icon URLs:", error);
-    return ["/images/icon/loading-bookmark-icon.svg"];
+    return [];
   }
 }
