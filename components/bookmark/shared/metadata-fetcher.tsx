@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { generateIconUrl } from "@/utils/icon-url";
+import { generateIconUrl, generateFallbackIconUrls } from "@/utils/icon-url";
 
 interface IconUrlGeneratorProps {
   url: string;
@@ -9,10 +9,11 @@ interface IconUrlGeneratorProps {
 }
 
 export function IconUrlGenerator({ url, onIconUrlGenerated }: IconUrlGeneratorProps) {
-  // 当URL变化且不为空时，生成谷歌图标URL
+  // 当URL变化且不为空时，生成图标URL
   useEffect(() => {
     if (url && url.trim() !== "") {
       // 使用工具函数生成图标URL
+      // 注意：我们仍然使用单一URL而不是备选URL列表，因为FallbackIcon组件会处理备选逻辑
       const iconUrl = generateIconUrl(url);
 
       // 回调函数返回图标URL
@@ -36,9 +37,21 @@ export function MetadataFetcher({ url, onMetadataFetched }: MetadataFetcherProps
       // 生成图标URL
       const icon_url = generateIconUrl(url);
 
+      // 尝试提取标题
+      let title = url;
+      try {
+        // 从URL中提取域名作为标题的一部分
+        const urlObj = new URL(url);
+        const domain = urlObj.hostname;
+        title = domain.replace(/^www\./, ''); // 移除www前缀
+      } catch (e) {
+        // 如果URL解析失败，使用原始URL作为标题
+        console.debug("无法解析URL:", e);
+      }
+
       // 调用回调函数，传递元数据
       onMetadataFetched({
-        title: url,
+        title: title,
         icon_url
       });
     }

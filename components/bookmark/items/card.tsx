@@ -15,6 +15,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useDefaultIcon } from "@/hooks/use-default-icon";
+import { FallbackIcon } from "@/components/bookmark/items/fallback-icon";
 
 interface BookmarkItemCardProps {
   item: BookmarkItem;
@@ -119,50 +120,14 @@ export function BookmarkItemCard({
       <CardContent className={`flex-grow ${compact ? 'p-3' : 'p-3'} z-10 relative pointer-events-none`}>
         <div className="flex items-start gap-2">
           <div className={`flex-shrink-0 ${compact ? 'w-7 h-7' : 'w-8 h-8'} relative bg-background rounded-md p-1 border flex items-center justify-center pointer-events-auto`}>
-            {icon_url ? (
-              <>
-                <img
-                  src={icon_url}
-                  alt={title}
-                  width={24}
-                  height={24}
-                  className={`object-contain ${compact ? 'w-5 h-5' : 'w-6 h-6'}`}
-                  onError={(e) => {
-                    // 图片加载失败时，设置一个标志以显示默认图标
-                    (e.target as HTMLImageElement).style.display = 'none';
-                    (e.currentTarget.parentNode as HTMLElement).dataset.useDefaultIcon = 'true';
-
-                    // 记录错误但不在控制台显示
-                    const errorUrl = (e.target as HTMLImageElement).src;
-                    if (errorUrl.includes('gstatic.com/faviconV2')) {
-                      // 这是预期的错误，不需要记录
-                      return;
-                    }
-
-                    // 其他错误可以记录
-                    console.debug(`图标加载失败: ${errorUrl}`);
-                  }}
-                />
-                {/* 当图片加载失败时显示的默认图标 */}
-                <span data-default-icon className="hidden data-[use-default-icon=true]:block absolute inset-0 flex items-center justify-center">
-                  <img
-                    src={defaultIcon}
-                    alt={locale === 'zh' ? "默认书签图标" : "Default bookmark icon"}
-                    width={24}
-                    height={24}
-                    className={`object-contain ${compact ? 'w-5 h-5' : 'w-6 h-6'}`}
-                  />
-                </span>
-              </>
-            ) : (
-              <img
-                src={defaultIcon}
-                alt={locale === 'zh' ? "默认书签图标" : "Default bookmark icon"}
-                width={24}
-                height={24}
-                className={`object-contain ${compact ? 'w-5 h-5' : 'w-6 h-6'}`}
-              />
-            )}
+            {/* 使用新的FallbackIcon组件，支持多个备选图标源 */}
+            <FallbackIcon
+              url={url}
+              title={title}
+              initialIconUrl={icon_url}
+              defaultIcon={defaultIcon}
+              compact={compact}
+            />
           </div>
           <div className="flex-grow min-w-0">
             <h3 className={`${compact ? 'text-sm' : 'text-sm'} font-medium truncate pointer-events-auto`}>
