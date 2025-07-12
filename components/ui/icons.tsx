@@ -37,11 +37,16 @@ import {
   PanelLeft,
   Plus,
   PlusCircle,
+  Search,
   Sparkles,
   Sun,
+  Tag,
   Trash2,
   Trophy,
   User,
+  X,
+  Clock,
+  Filter,
   Zap
 } from "lucide-react";
 
@@ -77,10 +82,15 @@ export {
   PanelLeft,
   Plus,
   PlusCircle,
+  Search,
   Sparkles,
   Sun,
+  Tag,
   Trash2,
   Trophy,
   User,
+  X,
+  Clock,
+  Filter,
   Zap
 };

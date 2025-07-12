@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useCollection } from "@/contexts/collection-context";
 import { useEditMode } from "@/contexts/edit-mode-context";
@@ -42,6 +42,8 @@ import {
 import { toast } from "sonner";
 import { getCurrentUserUuidClient } from "@/services/bookmark/auth";
 import { updateCategoriesWithRealData, updateSubcategoriesWithRealData, updateItemsWithRealData } from "@/utils/optimistic-update";
+import { CollectionSearch } from "@/components/search/collection-search";
+import { useSearch } from "@/contexts/search-context";
 
 interface CollectionDetailViewProps {
   collection: BookmarkCollection | BookmarkCollectionWithStats;
@@ -63,6 +65,7 @@ export function CollectionDetailView({
   const router = useRouter();
   const searchParams = useSearchParams() || null;
   const { setCurrentCollection } = useCollection();
+  const { collectionSearchQuery } = useSearch();
 
   // 使用全局编辑模式状态
   const {
@@ -81,6 +84,9 @@ export function CollectionDetailView({
   const [selectedSubcategoryUuid, setSelectedSubcategoryUuid] = useState<string | undefined>();
   const [currentUserUuid, setCurrentUserUuid] = useState<string | null>(null);
   const [localCategories, setLocalCategories] = useState<BookmarkCategoryWithSubcategories[]>(categoriesWithSubcategories);
+
+  // 搜索相关状态
+  const [filteredItems, setFilteredItems] = useState<BookmarkItem[]>([]);
 
   // 本地状态
   const [showBookmarklet, setShowBookmarklet] = useState(false);
@@ -110,6 +116,19 @@ export function CollectionDetailView({
   const selectedSubcategory = selectedCategory?.subcategories?.find(
     (subcategory) => subcategory.uuid === selectedSubcategoryUuid
   );
+
+  // 获取所有书签项目（用于搜索）
+  const allItems = useMemo(() => {
+    const items: BookmarkItem[] = [];
+    localCategories.forEach(category => {
+      category.subcategories?.forEach(subcategory => {
+        if (subcategory.items) {
+          items.push(...subcategory.items);
+        }
+      });
+    });
+    return items;
+  }, [localCategories]);
 
   // 当选中的分类变化时，默认选择"全部"（不选择具体子分类）
   useEffect(() => {
@@ -673,6 +692,17 @@ export function CollectionDetailView({
         </div>
       )}
 
+      {/* 集合内搜索 */}
+      {localCategories.length > 0 && allItems.length > 0 && (
+        <div className="mb-6">
+          <CollectionSearch
+            items={allItems}
+            categories={localCategories}
+            onFilteredResults={setFilteredItems}
+          />
+        </div>
+      )}
+
       {/* 子分类排序 - 当启用时显示在顶部 */}
       {selectedCategory && selectedCategory.subcategories && selectedCategory.subcategories.length > 0 && subcategoriesReorderEnabled && (
         <div className="mb-6">
@@ -771,7 +801,42 @@ export function CollectionDetailView({
 
         {/* 右侧书签列表 */}
         <div className="md:col-span-6">
-          {selectedSubcategory ? (
+          {/* 如果有搜索结果，显示搜索结果 */}
+          {collectionSearchQuery && filteredItems.length >= 0 ? (
+            <div>
+              <div className="mb-5 pb-2 border-b">
+                <h3 className="text-lg font-medium flex items-center">
+                  <div className="w-3 h-3 rounded-full bg-primary mr-2"></div>
+                  搜索结果
+                </h3>
+                <p className="text-sm text-muted-foreground mt-1">
+                  找到 {filteredItems.length} 个匹配的书签
+                </p>
+              </div>
+
+              {filteredItems.length > 0 ? (
+                <BookmarkItemList
+                  items={filteredItems}
+                  isOwner={isOwner}
+                  editMode={editMode}
+                  onEdit={handleEditItem}
+                  onDelete={handleDeleteItem}
+                  onAdd={handleAddItem}
+                />
+              ) : (
+                <div className="text-center py-12 border border-dashed border-border/50 rounded-xl bg-muted/20 backdrop-blur-sm">
+                  <div className="flex flex-col items-center gap-3">
+                    <div className="w-12 h-12 bg-muted/50 rounded-full flex items-center justify-center">
+                      <Bookmark className="h-6 w-6 text-muted-foreground" />
+                    </div>
+                    <p className="text-muted-foreground">
+                      未找到匹配的书签
+                    </p>
+                  </div>
+                </div>
+              )}
+            </div>
+          ) : selectedSubcategory ? (
             // 显示选中的子分类的书签
             bookmarksReorderEnabled ? (
               <SortableBookmarkList

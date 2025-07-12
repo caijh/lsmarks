@@ -11,6 +11,7 @@ import { EditModeProvider } from "@/contexts/edit-mode-context";
 import { IconInterceptorProvider } from "@/components/providers/icon-interceptor-provider";
 import { MobilePerformanceProvider } from "@/components/providers/mobile-performance-provider";
 import { PWAProvider } from "@/components/providers/pwa-provider";
+import { SearchProvider } from "@/contexts/search-context";
 import { cn } from "@/lib/utils";
 import { NavigationWrapper } from "@/components/bookmark/layout/navigation-wrapper";
 import { auth } from "@/auth";
@@ -81,13 +82,15 @@ export default async function RootLayout({
               <MobilePerformanceProvider>
                 <IconInterceptorProvider>
                   <PWAProvider>
-                    <CollectionProvider>
-                      <EditModeProvider>
-                        <NavigationWrapper user={session?.user}>
-                          {children}
-                        </NavigationWrapper>
-                      </EditModeProvider>
-                    </CollectionProvider>
+                    <SearchProvider>
+                      <CollectionProvider>
+                        <EditModeProvider>
+                          <NavigationWrapper user={session?.user}>
+                            {children}
+                          </NavigationWrapper>
+                        </EditModeProvider>
+                      </CollectionProvider>
+                    </SearchProvider>
                   </PWAProvider>
                 </IconInterceptorProvider>
               </MobilePerformanceProvider>

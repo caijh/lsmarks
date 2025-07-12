@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { Bookmark, User, Droplets, LogOut, BookmarkPlus, PlusCircle, MoveVertical } from "@/components/ui/icons";
+import { Bookmark, User, Droplets, LogOut, BookmarkPlus, PlusCircle, MoveVertical, Search } from "@/components/ui/icons";
 import { signOut } from "next-auth/react";
 import { useCollection } from "@/contexts/collection-context";
 import { useEditMode } from "@/contexts/edit-mode-context";
@@ -22,6 +22,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { ThemeSwitcher } from "@/components/bookmark/theme/theme-switcher";
 import { Logo } from "@/components/ui/logo";
+import { GlobalSearch } from "@/components/search/global-search";
 
 interface SiteHeaderProps {
   user?: {
@@ -216,7 +217,22 @@ export function SiteHeader({ user }: SiteHeaderProps) {
           )}
         </div>
 
+        {/* 中间：搜索框 */}
+        <div className="hidden md:flex flex-1 max-w-md mx-4">
+          <GlobalSearch />
+        </div>
+
         <div className="flex items-center justify-end gap-1 sm:gap-2 flex-shrink-0">
+          {/* 移动端搜索按钮 */}
+          <div className="md:hidden">
+            <GlobalSearch
+              trigger={
+                <Button variant="ghost" size="icon" className="h-7 w-7 rounded-full">
+                  <Search className="h-4 w-4" />
+                </Button>
+              }
+            />
+          </div>
           {/* 编辑模式切换按钮和工具按钮 - 只在集合页面显示且用户已登录 */}
           {isCollectionPage && currentCollection && user && (
             <>
