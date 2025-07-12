@@ -19,7 +19,7 @@ export function Logo({ className, showText = true, size = "md" }: LogoProps) {
   const isCollectionPage = pathname?.includes('/collections/') && pathname?.split('/').length > 3;
 
   // 如果在集合详情页面且有当前集合，则显示集合名称，否则显示网站名称
-  const siteName = isCollectionPage && currentCollection ? currentCollection.name : "雷水书签";
+  const siteName = isCollectionPage && currentCollection ? currentCollection.name : "LSMarks";
 
   // 根据尺寸设置样式 - 移动端优化
   const sizeClasses = {
@@ -50,7 +50,7 @@ export function Logo({ className, showText = true, size = "md" }: LogoProps) {
         <div className={cn(sizeClasses[size])}>
           <img
             src="/logo.svg"
-            alt="雷水书签 Logo"
+            alt="LSMarks Logo"
             className="w-full h-full"
           />
         </div>

@@ -1,19 +1,19 @@
-# 雷水书签 (LeiShui Bookmark)
+# LSMarks - 智能书签管理系统
 
 <div align="center">
-  <img src="public/logo.svg" alt="雷水书签 Logo" width="120" />
+  <img src="public/logo.svg" alt="LSMarks Logo" width="120" />
   <h3>简洁优雅的书签管理与分享系统</h3>
 </div>
 
 ## 📖 项目介绍
 
-雷水书签是一个现代化的书签管理与分享系统，灵感源自《易经》中的"解卦"（雷水解）。项目采用 Next.js 15 构建，提供简洁直观的用户界面和高效的书签管理体验。
+LSMarks 是一个现代化的书签管理与分享系统，专为提升网络资源整理效率而设计。项目采用 Next.js 15 构建，提供简洁直观的用户界面和高效的书签管理体验。
 
 ### 核心特性
 
 - **书签集合管理**：创建、编辑和分享您的书签集合
 - **多级分类**：通过大分类和子分类灵活组织书签
-- **主题定制**：支持多种预设主题（晨曦、碧海、翠竹、紫霞、朱砂）
+- **主题定制**：支持多种预设主题和深色/浅色模式
 - **响应式设计**：完美适配桌面和移动设备
 - **高性能**：采用代码分割和动态导入优化性能
 - **简洁界面**：专注于用户体验的简约设计
@@ -22,15 +22,15 @@
 
 ### 在线体验
 
-访问 [https://lsmark.669696.xyz](https://lsmark.669696.xyz) 体验雷水书签。
+访问 [https://lsmark.669696.xyz](https://lsmark.669696.xyz) 体验 LSMarks。
 
 ### 本地开发
 
 1. **克隆仓库**
 
 ```bash
-git clone https://github.com/yourusername/leishui-bookmark.git
-cd leishui-bookmark
+git clone https://github.com/yourusername/lsmarks.git
+cd lsmarks
 ```
 
 2. **安装依赖**
@@ -83,7 +83,7 @@ pnpm dev
 
 ### 部署前准备
 
-在部署雷水书签前，您需要准备以下资源：
+在部署 LSMarks 前，您需要准备以下资源：
 
 1. **域名**：一个指向您部署服务器的域名（例如 `yourdomain.com`）
 2. **Supabase 项目**：用于数据库和用户认证
@@ -111,6 +111,11 @@ pnpm dev
 4. 点击 "Run" 执行 SQL 脚本，创建所有必要的表和函数
 5. 确认在 "Table Editor" 中可以看到创建的表（users、bookmark_collections 等）
 
+**重要：安全策略配置**
+- 如果是现有数据库或需要单独应用安全策略，请执行 `data/rls-policies.sql`
+- 这将启用行级安全（RLS）并修复安全警告
+- 在 SQL 编辑器中执行该文件以确保数据安全
+
 ### 步骤 3：配置 Supabase 认证
 
 1. 在 Supabase 控制台中，导航到 Authentication > Settings
@@ -122,7 +127,7 @@ pnpm dev
 
 ### 步骤 4：准备环境变量
 
-以下是部署雷水书签所需的所有环境变量：
+以下是部署 LSMarks 所需的所有环境变量：
 
 ```bash
 # 站点 URL - 您的网站域名，用于站点访问和认证回调
@@ -168,7 +173,7 @@ Vercel 是部署 Next.js 应用的最佳平台，提供免费计划和简单的�
 
 
 <div align="center">
-  <p>雷水书签 - 解卦象征解脱、解除险难。坎为雨，震为雷，雷雨兴起，万物当春，纷纷舒发生机，为解。</p>
+  <p>LSMarks - 智能书签管理系统，让您的网络资源井然有序，构建个人知识库。</p>
 
   <div style="display: flex; justify-content: center; gap: 20px; margin-top: 30px;">
     <img src="public/images/买个辣条.jpg" alt="买个辣条" width="120" />

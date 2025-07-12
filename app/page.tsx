@@ -1,12 +1,11 @@
 import { Metadata } from "next";
 import { HeroBanner } from "@/components/bookmark/home/hero-banner";
-import { HexagramSection } from "@/components/bookmark/home/hexagram-section";
 import { BookmarkletSection } from "@/components/bookmark/home/bookmarklet-section";
 import { CtaSection } from "@/components/bookmark/home/cta-section";
 
 export const metadata: Metadata = {
-  title: "雷水书签 - 组织和分享您的书签",
-  description: "使用雷水书签组织、分类和分享您的书签，创建公开或私有的网站收藏集合，灵感源自《周易》解卦。",
+  title: "LSMarks - 智能书签管理系统",
+  description: "使用 LSMarks 智能管理、分类和分享您的书签，创建公开或私有的网站收藏集合，构建个人知识库。",
 };
 
 export default async function HomePage() {
@@ -24,9 +23,6 @@ export default async function HomePage() {
       <div className="space-y-4">
         {/* 英雄区域 */}
         <HeroBanner />
-
-        {/* 解卦解释 */}
-        <HexagramSection />
 
         {/* Bookmarklet功能介绍 */}
         <BookmarkletSection />

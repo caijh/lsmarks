@@ -63,9 +63,9 @@ export function PreviewSection() {
                   <div className="border-b p-4 flex items-center justify-between bg-card/30">
                     <div className="flex items-center gap-3">
                       <div className="w-8 h-8 rounded-md bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white">
-                        解
+                        📚
                       </div>
-                      <span className="font-medium text-lg">雷水书签</span>
+                      <span className="font-medium text-lg">LSMarks</span>
                     </div>
                     <div className="flex items-center gap-3">
                       <div className="w-9 h-9 rounded-full bg-primary/10 flex items-center justify-center">

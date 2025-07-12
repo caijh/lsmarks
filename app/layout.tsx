@@ -20,9 +20,9 @@ const fontSans = {
 };
 
 export const metadata: Metadata = {
-  title: "雷水书签 - 组织和分享您的书签",
-  description: "使用雷水书签组织、分类和分享您的书签。创建公开或私有的网站收藏集合，灵感源自《周易》解卦。",
-  keywords: "雷水书签, 书签集合, 书签管理, 书签分享, 网络书签, 书签整理, 周易",
+  title: "LSMarks - 智能书签管理系统",
+  description: "使用 LSMarks 智能管理、分类和分享您的书签。创建公开或私有的网站收藏集合，构建个人知识库。",
+  keywords: "LSMarks, 书签管理, 书签集合, 书签分享, 网络书签, 书签整理, 知识管理",
 };
 
 export default async function RootLayout({

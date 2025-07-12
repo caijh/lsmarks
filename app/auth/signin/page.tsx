@@ -43,7 +43,7 @@ export default function SignInPage() {
           <BookmarkCheck className="h-10 w-10 text-primary" />
           <div className="absolute w-16 h-16 bg-primary/10 rounded-full animate-pulse"></div>
         </div>
-        <h1 className="text-2xl font-bold">雷水书签</h1>
+        <h1 className="text-2xl font-bold">LSMarks</h1>
         <p className="text-muted-foreground mt-1">登录您的账号</p>
       </div>
 

@@ -2,19 +2,19 @@
 
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Zap, Droplets, BookmarkPlus } from "@/components/ui/icons";
+import { Sparkles, BookmarkPlus } from "@/components/ui/icons";
 import { motion } from "framer-motion";
 
 export function HeroBanner() {
   // 硬编码中文翻译
   const t = (key: string) => {
     // 为常用键提供默认值
-    if (key === "home.hero.title") return "雷水解卦 · 书签整理";
+    if (key === "home.hero.title") return "LSMarks · 智能书签管理";
     if (key === "home.hero.subtitle") return "组织、分类和分享您的网络书签";
-    if (key === "home.hero.description") return "雷水书签帮助您整理网络资源，创建个性化的书签集合，并轻松分享给他人。灵感源自《周易》解卦，象征解脱和新生。";
+    if (key === "home.hero.description") return "LSMarks 帮助您整理网络资源，创建个性化的书签集合，并轻松分享给他人。构建您的个人知识库。";
     if (key === "home.hero.cta_primary") return "开始使用";
     if (key === "home.hero.cta_secondary") return "了解更多";
-    if (key === "bookmark.header.site_name") return "雷水书签";
+    if (key === "bookmark.header.site_name") return "LSMarks";
     return key;
   };
 
@@ -58,9 +58,9 @@ export function HeroBanner() {
             className="mb-4 sm:mb-6 flex justify-center"
           >
             <div className="inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-primary/10 text-primary border border-primary/20">
-              <Zap className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
-              <span className="text-xs sm:text-sm font-medium">雷水解卦</span>
-              <Droplets className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+              <BookmarkPlus className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+              <span className="text-xs sm:text-sm font-medium">智能书签管理</span>
+              <Sparkles className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
             </div>
           </motion.div>
 
@@ -79,7 +79,7 @@ export function HeroBanner() {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="text-base sm:text-lg md:text-xl lg:text-2xl text-muted-foreground mb-6 sm:mb-8 px-2 sm:px-4"
           >
-            解卦：象征解脱、解除险难。坎为雨，震为雷，雷雨兴起，万物当春，纷纷舒发生机，为解。
+            智能整理，高效管理，让您的网络资源井然有序
           </motion.p>
 
           <motion.p
@@ -88,9 +88,9 @@ export function HeroBanner() {
             transition={{ duration: 0.6, delay: 0.3 }}
             className="text-sm sm:text-base md:text-lg text-foreground/80 mb-8 sm:mb-10 max-w-2xl mx-auto px-2 sm:px-4 leading-relaxed"
           >
-            如同雷雨化解严冬，雷水书签帮您解除数字混乱，
+            告别杂乱无章的书签管理，LSMarks 帮您轻松整理网络资源，
             <br className="hidden sm:inline" />
-            整理知识，开启高效有序的网络生活。
+            构建个人知识库，开启高效有序的数字生活。
           </motion.p>
 
           <motion.div
@@ -111,28 +111,7 @@ export function HeroBanner() {
           </motion.div>
         </div>
 
-        {/* 解卦图示 */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.8, delay: 0.6 }}
-          className="mt-12 sm:mt-16 max-w-sm sm:max-w-md mx-auto bg-card/50 backdrop-blur-sm border border-border/50 rounded-xl p-4 sm:p-6 shadow-lg"
-        >
-          <div className="grid grid-cols-2 gap-4 sm:gap-6">
-            <div className="text-center">
-              <div className="text-xl sm:text-2xl font-bold mb-1 sm:mb-2 text-primary">震 ☳</div>
-              <div className="text-xs sm:text-sm text-muted-foreground">上卦：雷</div>
-            </div>
-            <div className="text-center">
-              <div className="text-xl sm:text-2xl font-bold mb-1 sm:mb-2 text-primary">坎 ☵</div>
-              <div className="text-xs sm:text-sm text-muted-foreground">下卦：水</div>
-            </div>
-          </div>
-          <div className="mt-4 sm:mt-6 text-center">
-            <div className="text-2xl sm:text-3xl font-bold mb-1 sm:mb-2">解 ䷧</div>
-            <div className="text-xs sm:text-sm text-muted-foreground">第四十卦：解卦</div>
-          </div>
-        </motion.div>
+
       </div>
     </div>
   );

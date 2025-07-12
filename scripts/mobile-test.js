@@ -61,7 +61,7 @@ const testCases = {
     
     // 检查页面标题
     const title = await page.title();
-    if (!title.includes('雷水书签')) {
+    if (!title.includes('LSMarks')) {
       throw new Error('Page title incorrect');
     }
     

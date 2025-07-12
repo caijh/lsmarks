@@ -7,7 +7,7 @@ import { BookOpen } from "lucide-react";
 export function SiteFooter() {
   // 硬编码中文翻译
   const footer = {
-    copyright: "© {year} 雷水书签. 保留所有权利."
+    copyright: "© {year} LSMarks. 保留所有权利."
   };
   return (
     <footer className="border-t py-6 md:py-0 mt-auto glass-footer relative">

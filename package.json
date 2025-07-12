@@ -1,15 +1,15 @@
 {
-  "name": "leishui-bookmark",
+  "name": "lsmarks",
   "version": "1.0.0",
   "private": true,
-  "author": "leishui",
+  "author": "lsmarks",
   "homepage": "https://lsmark.669696.xyz",
   "scripts": {
     "dev": "cross-env NODE_NO_WARNINGS=1 next dev --turbopack",
     "build": "next build --no-lint --debug",
     "start": "NODE_NO_WARNINGS=1 next start",
     "lint": "next lint",
-    "docker:build": "docker build -f Dockerfile -t leishui-bookmark:latest .",
+    "docker:build": "docker build -f Dockerfile -t lsmarks:latest .",
     "clean": "pnpm prune",
     "analyze": "cross-env ANALYZE=true next build"
   },
