@@ -215,8 +215,10 @@ export function BookmarkItemCard({
                 </TooltipProvider>
               )}
             </div>
-            {!compact && description && (
-              <p className="text-[10px] sm:text-xs text-muted-foreground mt-1 sm:mt-1.5 line-clamp-2 pointer-events-auto leading-relaxed">
+            {description && (
+              <p className={`text-muted-foreground mt-1 sm:mt-1.5 line-clamp-2 pointer-events-auto leading-relaxed ${
+                compact ? 'text-[9px] sm:text-[10px] line-clamp-1' : 'text-[10px] sm:text-xs'
+              }`}>
                 {description}
               </p>
             )}
