@@ -9,6 +9,7 @@ import { DataProvider } from "@/providers/data-provider";
 import { CollectionProvider } from "@/contexts/collection-context";
 import { EditModeProvider } from "@/contexts/edit-mode-context";
 import { IconInterceptorProvider } from "@/components/providers/icon-interceptor-provider";
+import { MobilePerformanceProvider } from "@/components/providers/mobile-performance-provider";
 import { cn } from "@/lib/utils";
 import { NavigationWrapper } from "@/components/bookmark/layout/navigation-wrapper";
 import { auth } from "@/auth";
@@ -37,22 +38,24 @@ export default async function RootLayout({
       <body
         suppressHydrationWarning
         className={cn(
-          "min-h-screen bg-background font-sans antialiased overflow-x-hidden",
+          "min-h-screen bg-background font-sans antialiased overflow-x-hidden touch-optimized mobile-scroll safe-area-inset",
           fontSans.variable
         )}
       >
         <DataProvider>
           <AppContextProvider>
             <ThemeProvider>
-              <IconInterceptorProvider>
-                <CollectionProvider>
-                  <EditModeProvider>
-                    <NavigationWrapper user={session?.user}>
-                      {children}
-                    </NavigationWrapper>
-                  </EditModeProvider>
-                </CollectionProvider>
-              </IconInterceptorProvider>
+              <MobilePerformanceProvider>
+                <IconInterceptorProvider>
+                  <CollectionProvider>
+                    <EditModeProvider>
+                      <NavigationWrapper user={session?.user}>
+                        {children}
+                      </NavigationWrapper>
+                    </EditModeProvider>
+                  </CollectionProvider>
+                </IconInterceptorProvider>
+              </MobilePerformanceProvider>
             </ThemeProvider>
           </AppContextProvider>
         </DataProvider>

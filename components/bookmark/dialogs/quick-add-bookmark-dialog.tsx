@@ -715,27 +715,29 @@ export function QuickAddBookmarkDialog({
       <DialogTrigger asChild>
         {children}
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[600px] max-h-[90vh] overflow-y-auto p-3">
+      <DialogContent className="sm:max-w-[600px] max-h-[90vh] overflow-y-auto p-3 sm:p-6 w-[95vw] sm:w-full">
         <DialogHeader className="pb-2 mb-1 border-b">
-          <DialogTitle className="text-base font-medium">添加书签到"{collection.name}"</DialogTitle>
+          <DialogTitle className="text-sm sm:text-base font-medium leading-tight">
+            添加书签到"{collection.name}"
+          </DialogTitle>
         </DialogHeader>
 
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3 sm:space-y-4">
             {/* 书签基本信息区域 */}
-            <div className="space-y-2 bg-muted/10 p-3 rounded-md">
-              <div className="grid grid-cols-2 gap-3">
+            <div className="space-y-3 sm:space-y-4 bg-muted/10 p-3 sm:p-4 rounded-md">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                 <FormField
                   control={form.control}
                   name="title"
                   render={({ field }) => (
-                    <FormItem className="space-y-1">
-                      <FormLabel className="text-xs font-medium">标题</FormLabel>
+                    <FormItem className="space-y-1 sm:space-y-2">
+                      <FormLabel className="text-xs sm:text-sm font-medium">标题</FormLabel>
                       <FormControl>
                         <Input
                           placeholder="输入标题"
                           {...field}
-                          className="h-8 text-sm"
+                          className="h-9 sm:h-10 text-sm"
                         />
                       </FormControl>
                       <FormMessage />
@@ -747,13 +749,13 @@ export function QuickAddBookmarkDialog({
                   control={form.control}
                   name="url"
                   render={({ field }) => (
-                    <FormItem className="space-y-1">
-                      <FormLabel className="text-xs font-medium">URL</FormLabel>
+                    <FormItem className="space-y-1 sm:space-y-2">
+                      <FormLabel className="text-xs sm:text-sm font-medium">URL</FormLabel>
                       <FormControl>
                         <Input
                           placeholder="https://example.com"
                           {...field}
-                          className="h-8 text-sm"
+                          className="h-9 sm:h-10 text-sm"
                           onChange={(e) => {
                             field.onChange(e);
                           }}
@@ -774,13 +776,13 @@ export function QuickAddBookmarkDialog({
                 control={form.control}
                 name="description"
                 render={({ field }) => (
-                  <FormItem className="space-y-1">
-                    <FormLabel className="text-xs font-medium">描述</FormLabel>
+                  <FormItem className="space-y-1 sm:space-y-2">
+                    <FormLabel className="text-xs sm:text-sm font-medium">描述</FormLabel>
                     <FormControl>
                       <Textarea
                         placeholder="书签描述（可选）"
                         {...field}
-                        className="resize-y min-h-[60px] text-sm"
+                        className="resize-y min-h-[60px] sm:min-h-[80px] text-sm"
                       />
                     </FormControl>
                     <FormMessage />
@@ -789,28 +791,28 @@ export function QuickAddBookmarkDialog({
               />
             </div>
 
-            {/* 分类和子分类选择区域 - 合并在一行 */}
-            <div className="space-y-3 bg-muted/10 p-3 rounded-md">
-              <h3 className="text-xs font-medium text-muted-foreground mb-2">
+            {/* 分类和子分类选择区域 */}
+            <div className="space-y-3 sm:space-y-4 bg-muted/10 p-3 sm:p-4 rounded-md">
+              <h3 className="text-xs sm:text-sm font-medium text-muted-foreground mb-2">
                 选择分类和子分类
               </h3>
 
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                 {/* 大分类选择 */}
                 <div>
                   {form.watch("use_new_category") ? (
-                    <div className="flex items-center">
+                    <div className="flex flex-col sm:flex-row sm:items-end gap-2 sm:gap-3">
                       <FormField
                         control={form.control}
                         name="new_category_name"
                         render={({ field }) => (
-                          <FormItem className="flex-1 mr-2 space-y-1">
-                            <FormLabel className="text-xs font-medium">新分类名称</FormLabel>
+                          <FormItem className="flex-1 space-y-1 sm:space-y-2">
+                            <FormLabel className="text-xs sm:text-sm font-medium">新分类名称</FormLabel>
                             <FormControl>
                               <Input
                                 placeholder="输入新大分类名称"
                                 {...field}
-                                className="h-8 text-sm"
+                                className="h-9 sm:h-10 text-sm"
                               />
                             </FormControl>
                             <FormMessage />
@@ -822,25 +824,25 @@ export function QuickAddBookmarkDialog({
                         type="button"
                         variant="outline"
                         size="icon"
-                        className="h-8 w-8 mt-6"
+                        className="h-9 w-9 sm:h-10 sm:w-10 flex-shrink-0"
                         onClick={() => {
                           form.setValue("use_new_category", false);
                           handleUseNewCategoryChange(false);
                         }}
                         title="返回选择分类"
                       >
-                        <ChevronLeft className="h-3 w-3" />
+                        <ChevronLeft className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                       </Button>
                     </div>
                   ) : (
                     <div>
-                      <div className="flex items-center">
+                      <div className="flex flex-col sm:flex-row sm:items-end gap-2 sm:gap-3">
                         <FormField
                           control={form.control}
                           name="category_uuid"
                           render={({ field }) => (
-                            <FormItem className="flex-1 mr-2 space-y-1">
-                              <FormLabel className="text-xs font-medium">大分类</FormLabel>
+                            <FormItem className="flex-1 space-y-1 sm:space-y-2">
+                              <FormLabel className="text-xs sm:text-sm font-medium">大分类</FormLabel>
                               <Select
                                 onValueChange={(value) => {
                                   field.onChange(value);
@@ -849,7 +851,7 @@ export function QuickAddBookmarkDialog({
                                 value={field.value}
                               >
                                 <FormControl>
-                                  <SelectTrigger className="h-8 text-sm">
+                                  <SelectTrigger className="h-9 sm:h-10 text-sm">
                                     <SelectValue placeholder="选择大分类" />
                                   </SelectTrigger>
                                 </FormControl>
@@ -870,14 +872,14 @@ export function QuickAddBookmarkDialog({
                           type="button"
                           variant="outline"
                           size="icon"
-                          className="h-8 w-8 mt-6"
+                          className="h-9 w-9 sm:h-10 sm:w-10 flex-shrink-0"
                           onClick={() => {
                             form.setValue("use_new_category", true);
                             handleUseNewCategoryChange(true);
                           }}
                           title="创建新分类"
                         >
-                          <Plus className="h-3 w-3" />
+                          <Plus className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                         </Button>
                       </div>
                     </div>
@@ -888,18 +890,18 @@ export function QuickAddBookmarkDialog({
                 {/* 子分类选择 */}
                 <div>
                   {form.watch("use_new_subcategory") ? (
-                    <div className="flex items-center">
+                    <div className="flex flex-col sm:flex-row sm:items-end gap-2 sm:gap-3">
                       <FormField
                         control={form.control}
                         name="new_subcategory_name"
                         render={({ field }) => (
-                          <FormItem className="flex-1 mr-2 space-y-1">
-                            <FormLabel className="text-xs font-medium">新子分类名称</FormLabel>
+                          <FormItem className="flex-1 space-y-1 sm:space-y-2">
+                            <FormLabel className="text-xs sm:text-sm font-medium">新子分类名称</FormLabel>
                             <FormControl>
                               <Input
                                 placeholder="输入新子分类名称"
                                 {...field}
-                                className="h-8 text-sm"
+                                className="h-9 sm:h-10 text-sm"
                                 disabled={!selectedCategory && form.watch("use_new_category") === false}
                               />
                             </FormControl>
@@ -915,14 +917,14 @@ export function QuickAddBookmarkDialog({
                         type="button"
                         variant="outline"
                         size="icon"
-                        className="h-8 w-8 mt-6"
+                        className="h-9 w-9 sm:h-10 sm:w-10 flex-shrink-0"
                         onClick={() => {
                           form.setValue("use_new_subcategory", false);
                           handleUseNewSubcategoryChange(false);
                         }}
                         title="返回选择子分类"
                       >
-                        <ChevronLeft className="h-3 w-3" />
+                        <ChevronLeft className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                       </Button>
                     </div>
                   ) : (
@@ -997,21 +999,21 @@ export function QuickAddBookmarkDialog({
               </div>
             </div>
 
-            <DialogFooter className="flex flex-col pt-3 mt-1 border-t">
+            <DialogFooter className="flex flex-col pt-3 sm:pt-4 mt-2 sm:mt-3 border-t">
               <div className="flex justify-center w-full">
                 {/* 添加书签按钮 */}
                 <Button
                   type="submit"
                   disabled={isSubmitting}
-                  className="min-w-[120px] flex items-center gap-1 h-9 text-sm"
+                  className="min-w-[140px] sm:min-w-[160px] flex items-center gap-1.5 sm:gap-2 h-10 sm:h-11 text-sm sm:text-base font-medium"
                 >
                   {isSubmitting && (
                     <>
-                      {saveStage === 'validating' && <Loader2 className="h-3 w-3 animate-spin" />}
-                      {saveStage === 'creating-category' && <FolderPlus className="h-3 w-3" />}
-                      {saveStage === 'creating-subcategory' && <FolderPlus className="h-3 w-3" />}
-                      {saveStage === 'saving-bookmark' && <BookmarkPlus className="h-3 w-3" />}
-                      {saveStage === 'success' && <CheckCircle className="h-3 w-3 text-green-500" />}
+                      {saveStage === 'validating' && <Loader2 className="h-3.5 w-3.5 sm:h-4 sm:w-4 animate-spin" />}
+                      {saveStage === 'creating-category' && <FolderPlus className="h-3.5 w-3.5 sm:h-4 sm:w-4" />}
+                      {saveStage === 'creating-subcategory' && <FolderPlus className="h-3.5 w-3.5 sm:h-4 sm:w-4" />}
+                      {saveStage === 'saving-bookmark' && <BookmarkPlus className="h-3.5 w-3.5 sm:h-4 sm:w-4" />}
+                      {saveStage === 'success' && <CheckCircle className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-green-500" />}
                     </>
                   )}
 
@@ -1031,8 +1033,8 @@ export function QuickAddBookmarkDialog({
 
               {/* 成功反馈 - 居中显示 */}
               {saveStage === 'success' && (
-                <div className="text-xs text-green-500 flex items-center justify-center gap-1 mt-2 bg-green-50 dark:bg-green-950/30 px-2 py-1 rounded mx-auto">
-                  <CheckCircle className="h-3 w-3" />
+                <div className="text-xs sm:text-sm text-green-500 flex items-center justify-center gap-1 sm:gap-1.5 mt-2 sm:mt-3 bg-green-50 dark:bg-green-950/30 px-3 sm:px-4 py-1.5 sm:py-2 rounded-md mx-auto">
+                  <CheckCircle className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                   <span>书签添加成功!</span>
                 </div>
               )}

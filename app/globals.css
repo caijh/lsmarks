@@ -137,6 +137,108 @@ html {
   transition: opacity 300ms, transform 300ms;
 }
 
+/* 移动端优化 */
+@media (max-width: 640px) {
+  /* 减少移动端动画以提升性能 */
+  .reduce-motion * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  /* 移动端触摸优化 */
+  .touch-optimized {
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+  }
+
+  /* 移动端滚动优化 */
+  .mobile-scroll {
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+  }
+
+  /* 移动端字体优化 */
+  body {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+}
+
+/* 隐藏滚动条但保持滚动功能 */
+.scrollbar-hide {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;  /* Chrome, Safari and Opera */
+}
+
+/* 移动端水平滚动优化 */
+.horizontal-scroll {
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+  scroll-snap-type: x mandatory;
+}
+
+.horizontal-scroll > * {
+  scroll-snap-align: start;
+}
+
+/* 触摸操作优化 */
+.touch-manipulation {
+  touch-action: manipulation;
+}
+
+/* 移动端分类导航特殊优化 */
+@media (max-width: 768px) {
+  .category-nav-container {
+    scroll-padding-left: 1rem;
+    scroll-padding-right: 1rem;
+  }
+
+  .category-nav-item {
+    scroll-margin-left: 0.5rem;
+    scroll-margin-right: 0.5rem;
+  }
+}
+
+/* 高对比度模式支持 */
+@media (prefers-contrast: high) {
+  .glass-effect {
+    background: hsl(var(--background) / 0.95);
+    border: 2px solid hsl(var(--border));
+  }
+}
+
+/* 减少动画偏好 */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* 移动端安全区域适配 */
+@supports (padding: max(0px)) {
+  .safe-area-inset {
+    padding-left: max(1rem, env(safe-area-inset-left));
+    padding-right: max(1rem, env(safe-area-inset-right));
+  }
+
+  .safe-area-inset-top {
+    padding-top: max(1rem, env(safe-area-inset-top));
+  }
+
+  .safe-area-inset-bottom {
+    padding-bottom: max(1rem, env(safe-area-inset-bottom));
+  }
+}
+
 .page-transition-exit {
   opacity: 1;
   transform: translateY(0);

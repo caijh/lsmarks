@@ -19,48 +19,48 @@ export function HeroBanner() {
   };
 
   return (
-    <div className="relative overflow-hidden py-16 md:py-20">
+    <div className="relative overflow-hidden py-12 sm:py-16 md:py-20">
 
-      {/* 雷电效果 */}
+      {/* 雷电效果 - 在移动端调整位置 */}
       <motion.div
-        className="absolute top-10 right-[20%] w-px h-20 bg-blue-400/70"
+        className="absolute top-8 sm:top-10 right-[15%] sm:right-[20%] w-px h-16 sm:h-20 bg-blue-400/70"
         initial={{ opacity: 0, scaleY: 0 }}
         animate={{ opacity: [0, 1, 0], scaleY: [0, 1, 0] }}
         transition={{ duration: 0.5, repeat: Infinity, repeatDelay: 7 }}
       />
       <motion.div
-        className="absolute top-10 right-[20%] w-px h-40 bg-blue-400/40 rotate-12 origin-top"
+        className="absolute top-8 sm:top-10 right-[15%] sm:right-[20%] w-px h-32 sm:h-40 bg-blue-400/40 rotate-12 origin-top"
         initial={{ opacity: 0, scaleY: 0 }}
         animate={{ opacity: [0, 1, 0], scaleY: [0, 1, 0] }}
         transition={{ duration: 0.5, delay: 0.1, repeat: Infinity, repeatDelay: 7 }}
       />
 
-      {/* 水滴效果 */}
+      {/* 水滴效果 - 在移动端调整位置 */}
       <motion.div
-        className="absolute bottom-20 left-[30%] w-2 h-2 rounded-full bg-blue-400/70"
+        className="absolute bottom-16 sm:bottom-20 left-[25%] sm:left-[30%] w-1.5 sm:w-2 h-1.5 sm:h-2 rounded-full bg-blue-400/70"
         initial={{ y: -20, opacity: 0 }}
         animate={{ y: 20, opacity: [0, 1, 0] }}
         transition={{ duration: 1.5, repeat: Infinity, repeatDelay: 3 }}
       />
       <motion.div
-        className="absolute bottom-10 left-[35%] w-1.5 h-1.5 rounded-full bg-blue-400/50"
+        className="absolute bottom-8 sm:bottom-10 left-[30%] sm:left-[35%] w-1 sm:w-1.5 h-1 sm:h-1.5 rounded-full bg-blue-400/50"
         initial={{ y: -15, opacity: 0 }}
         animate={{ y: 15, opacity: [0, 1, 0] }}
         transition={{ duration: 1.2, delay: 0.5, repeat: Infinity, repeatDelay: 4 }}
       />
 
-      <div className="container relative z-10">
-        <div className="max-w-3xl mx-auto text-center">
+      <div className="container relative z-10 px-4 sm:px-6">
+        <div className="max-w-4xl mx-auto text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="mb-6 flex justify-center"
+            className="mb-4 sm:mb-6 flex justify-center"
           >
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary border border-primary/20">
-              <Zap className="h-4 w-4" />
-              <span className="text-sm font-medium">雷水解卦</span>
-              <Droplets className="h-4 w-4" />
+            <div className="inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-primary/10 text-primary border border-primary/20">
+              <Zap className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+              <span className="text-xs sm:text-sm font-medium">雷水解卦</span>
+              <Droplets className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
             </div>
           </motion.div>
 
@@ -68,7 +68,7 @@ export function HeroBanner() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.1 }}
-            className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/80"
+            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 sm:mb-6 bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/80 leading-tight"
           >
             {t("bookmark.header.site_name")}
           </motion.h1>
@@ -77,7 +77,7 @@ export function HeroBanner() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="text-xl md:text-2xl text-muted-foreground mb-8"
+            className="text-base sm:text-lg md:text-xl lg:text-2xl text-muted-foreground mb-6 sm:mb-8 px-2 sm:px-4"
           >
             解卦：象征解脱、解除险难。坎为雨，震为雷，雷雨兴起，万物当春，纷纷舒发生机，为解。
           </motion.p>
@@ -86,10 +86,10 @@ export function HeroBanner() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.3 }}
-            className="text-lg text-foreground/80 mb-10 max-w-2xl mx-auto"
+            className="text-sm sm:text-base md:text-lg text-foreground/80 mb-8 sm:mb-10 max-w-2xl mx-auto px-2 sm:px-4 leading-relaxed"
           >
             如同雷雨化解严冬，雷水书签帮您解除数字混乱，
-            <br className="hidden md:inline" />
+            <br className="hidden sm:inline" />
             整理知识，开启高效有序的网络生活。
           </motion.p>
 
@@ -97,11 +97,14 @@ export function HeroBanner() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.4 }}
-            className="flex flex-col sm:flex-row gap-4 justify-center"
+            className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center"
           >
-            <Link href="/auth/signin">
-              <Button size="lg" className="rounded-full px-8 gap-2">
-                <BookmarkPlus className="h-5 w-5" />
+            <Link href="/auth/signin" className="w-full sm:w-auto">
+              <Button
+                size="lg"
+                className="rounded-full px-6 sm:px-8 gap-2 w-full sm:w-auto h-12 sm:h-auto text-base sm:text-lg"
+              >
+                <BookmarkPlus className="h-4 w-4 sm:h-5 sm:w-5" />
                 开始收藏
               </Button>
             </Link>
@@ -113,21 +116,21 @@ export function HeroBanner() {
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8, delay: 0.6 }}
-          className="mt-16 max-w-md mx-auto bg-card/50 backdrop-blur-sm border border-border/50 rounded-xl p-6 shadow-lg"
+          className="mt-12 sm:mt-16 max-w-sm sm:max-w-md mx-auto bg-card/50 backdrop-blur-sm border border-border/50 rounded-xl p-4 sm:p-6 shadow-lg"
         >
-          <div className="grid grid-cols-2 gap-6">
+          <div className="grid grid-cols-2 gap-4 sm:gap-6">
             <div className="text-center">
-              <div className="text-2xl font-bold mb-2 text-primary">震 ☳</div>
-              <div className="text-sm text-muted-foreground">上卦：雷</div>
+              <div className="text-xl sm:text-2xl font-bold mb-1 sm:mb-2 text-primary">震 ☳</div>
+              <div className="text-xs sm:text-sm text-muted-foreground">上卦：雷</div>
             </div>
             <div className="text-center">
-              <div className="text-2xl font-bold mb-2 text-primary">坎 ☵</div>
-              <div className="text-sm text-muted-foreground">下卦：水</div>
+              <div className="text-xl sm:text-2xl font-bold mb-1 sm:mb-2 text-primary">坎 ☵</div>
+              <div className="text-xs sm:text-sm text-muted-foreground">下卦：水</div>
             </div>
           </div>
-          <div className="mt-6 text-center">
-            <div className="text-3xl font-bold mb-2">解 ䷧</div>
-            <div className="text-sm text-muted-foreground">第四十卦：解卦</div>
+          <div className="mt-4 sm:mt-6 text-center">
+            <div className="text-2xl sm:text-3xl font-bold mb-1 sm:mb-2">解 ䷧</div>
+            <div className="text-xs sm:text-sm text-muted-foreground">第四十卦：解卦</div>
           </div>
         </motion.div>
       </div>
