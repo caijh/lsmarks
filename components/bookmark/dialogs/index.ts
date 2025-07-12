@@ -56,3 +56,11 @@ export const AddBookmarkDialog = dynamic(
     ssr: false
   }
 );
+
+export const EnhancedItemEditDialog = dynamic(
+  () => import('./enhanced-item-edit-dialog').then(mod => ({ default: mod.EnhancedItemEditDialog })),
+  {
+    loading: () => null,
+    ssr: false
+  }
+);

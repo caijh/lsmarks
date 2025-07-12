@@ -7,7 +7,7 @@ import { useEditMode } from "@/contexts/edit-mode-context";
 import { BookmarkCollection, BookmarkCollectionWithStats } from "@/types/bookmark/collection";
 import { BookmarkCategoryWithSubcategories } from "@/types/bookmark/category";
 import { BookmarkSubcategoryWithItems } from "@/types/bookmark/subcategory";
-import { BookmarkItem } from "@/types/bookmark/item";
+import { BookmarkItem, BookmarkItemFormData } from "@/types/bookmark/item";
 import { EditModeToggle } from "@/components/bookmark/shared/edit-mode-toggle";
 import { CategoryNav } from "@/components/bookmark/categories/nav";
 import { BookmarkItemList } from "@/components/bookmark/items/list";
@@ -20,7 +20,8 @@ import {
   SubcategoryFormDialog,
   ItemFormDialog,
   QuickAddBookmarkDialog,
-  DeleteConfirmationDialog
+  DeleteConfirmationDialog,
+  EnhancedItemEditDialog
 } from "@/components/bookmark/dialogs";
 import { BookmarkletGenerator } from "@/components/bookmark/bookmarklet/generator";
 import { Button } from "@/components/ui/button";
@@ -101,6 +102,7 @@ export function CollectionDetailView({
   const [isCategoryFormOpen, setIsCategoryFormOpen] = useState(false);
   const [isSubcategoryFormOpen, setIsSubcategoryFormOpen] = useState(false);
   const [isItemFormOpen, setIsItemFormOpen] = useState(false);
+  const [isEnhancedItemEditOpen, setIsEnhancedItemEditOpen] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [deleteItemType, setDeleteItemType] = useState<string>("");
   const [deleteItemName, setDeleteItemName] = useState<string>("");
@@ -290,7 +292,7 @@ export function CollectionDetailView({
   const handleEditItem = (item: BookmarkItem) => {
     setSelectedItem(item);
     setFormMode("edit");
-    setIsItemFormOpen(true);
+    setIsEnhancedItemEditOpen(true);
   };
 
   // 处理书签删除
@@ -415,6 +417,40 @@ export function CollectionDetailView({
       router.refresh();
     } catch (error) {
       toast.error(formMode === "edit" ? "更新书签失败" : "保存书签失败");
+      console.error(error);
+    }
+  };
+
+  // 处理增强版书签保存（支持分类迁移）
+  const handleEnhancedSaveItem = async (data: BookmarkItemFormData & { category_uuid: string }) => {
+    try {
+      if (!selectedItem || !selectedItem.uuid) {
+        throw new Error("无效的书签项目");
+      }
+
+      // 调用API更新书签
+      const response = await fetch(`/api/bookmark/items/${selectedItem.uuid}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          title: data.title,
+          url: data.url,
+          description: data.description,
+          subcategory_uuid: data.subcategory_uuid,
+          icon_url: data.icon_url
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("更新书签失败");
+      }
+
+      toast.success("书签已更新");
+      router.refresh();
+    } catch (error) {
+      toast.error("更新书签失败");
       console.error(error);
     }
   };
@@ -948,6 +984,19 @@ export function CollectionDetailView({
         onSave={handleSaveItem}
         onDelete={handleDeleteItem}
       />
+
+      {/* 增强版书签编辑对话框 - 支持分类迁移 */}
+      {selectedItem && (
+        <EnhancedItemEditDialog
+          open={isEnhancedItemEditOpen}
+          onOpenChange={setIsEnhancedItemEditOpen}
+          item={selectedItem}
+          categories={localCategories}
+          currentCategoryUuid={selectedCategoryUuid || ""}
+          onSave={handleEnhancedSaveItem}
+          onDelete={handleDeleteItem}
+        />
+      )}
 
       <DeleteConfirmationDialog
         open={isDeleteDialogOpen}
