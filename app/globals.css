@@ -181,11 +181,8 @@ html {
 .horizontal-scroll {
   -webkit-overflow-scrolling: touch;
   scroll-behavior: smooth;
-  scroll-snap-type: x mandatory;
-}
-
-.horizontal-scroll > * {
-  scroll-snap-align: start;
+  overflow-x: auto;
+  overflow-y: hidden;
 }
 
 /* 触摸操作优化 */
@@ -194,16 +191,27 @@ html {
 }
 
 /* 移动端分类导航特殊优化 */
-@media (max-width: 768px) {
-  .category-nav-container {
-    scroll-padding-left: 1rem;
-    scroll-padding-right: 1rem;
-  }
+.category-nav-container {
+  /* 确保可以完全滚动 */
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+}
 
-  .category-nav-item {
-    scroll-margin-left: 0.5rem;
-    scroll-margin-right: 0.5rem;
-  }
+.category-nav-container > div {
+  /* 确保内容容器有足够的宽度 */
+  display: flex !important;
+  flex-wrap: nowrap !important;
+  width: max-content !important;
+  min-width: 100% !important;
+}
+
+.category-nav-item {
+  /* 防止分类项目被压缩 */
+  flex-shrink: 0 !important;
+  flex-grow: 0 !important;
+  white-space: nowrap !important;
 }
 
 /* 高对比度模式支持 */

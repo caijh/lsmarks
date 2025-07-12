@@ -48,9 +48,12 @@ export function CategoryNav({
     if (!container) return;
 
     const { scrollLeft, scrollWidth, clientWidth } = container;
-    setCanScrollLeft(scrollLeft > 0);
-    setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 1);
-    setShowScrollIndicators(scrollWidth > clientWidth);
+
+    // 添加一些容错空间
+    const tolerance = 2;
+    setCanScrollLeft(scrollLeft > tolerance);
+    setCanScrollRight(scrollLeft < scrollWidth - clientWidth - tolerance);
+    setShowScrollIndicators(scrollWidth > clientWidth + tolerance);
   };
 
   // 滚动到指定位置
@@ -151,21 +154,34 @@ export function CategoryNav({
         {/* 滑动容器 - 优化移动端体验 */}
         <div
           ref={scrollContainerRef}
-          className="w-full overflow-x-auto scrollbar-hide px-4 py-2 flex justify-start md:justify-center horizontal-scroll category-nav-container"
+          className="w-full overflow-x-auto scrollbar-hide horizontal-scroll category-nav-container"
+          style={{
+            padding: '8px 16px',
+            overflowX: 'auto',
+            overflowY: 'hidden'
+          }}
         >
-          <div className="inline-flex gap-2 sm:gap-3 flex-nowrap md:flex-wrap justify-start md:justify-center min-w-0 md:min-w-full">
+          <div
+            className="flex gap-2 sm:gap-3 flex-nowrap"
+            style={{
+              width: 'max-content',
+              minWidth: '100%'
+            }}
+          >
             {categories.map((category) => (
               <div
                 key={category.uuid}
                 data-category-uuid={category.uuid}
                 onClick={() => onSelectCategory(category.uuid)}
-                className={`relative group px-3 sm:px-4 py-2 rounded-md border transition-all duration-200 hover:border-primary/50 hover:-translate-y-0.5 hover:shadow-md flex-shrink-0 category-nav-item ${
+                className={`relative group px-3 sm:px-4 py-2 rounded-md border transition-all duration-200 hover:border-primary/50 hover:-translate-y-0.5 hover:shadow-md category-nav-item ${
                   category.uuid === effectiveSelectedUuid
                     ? "bg-primary text-primary-foreground border-primary shadow-md scale-105"
                     : "bg-background/65 hover:bg-accent/65 backdrop-blur-sm"
                 } glass-effect font-medium cursor-pointer touch-manipulation`}
                 style={{
-                  minWidth: 'fit-content',
+                  flexShrink: 0,
+                  flexGrow: 0,
+                  whiteSpace: 'nowrap',
                   WebkitTapHighlightColor: 'transparent'
                 }}
               >
