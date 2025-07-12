@@ -173,11 +173,11 @@ export function CategoryNav({
                 key={category.uuid}
                 data-category-uuid={category.uuid}
                 onClick={() => onSelectCategory(category.uuid)}
-                className={`relative group px-3 sm:px-4 py-2 rounded-md border transition-all duration-200 hover:border-primary/50 hover:-translate-y-0.5 hover:shadow-md category-nav-item ${
+                className={`relative group px-3 sm:px-4 py-2.5 rounded-lg border transition-all duration-300 hover:border-primary/50 hover:-translate-y-1 hover:shadow-lg hover:shadow-primary/10 category-nav-item ${
                   category.uuid === effectiveSelectedUuid
-                    ? "bg-primary text-primary-foreground border-primary shadow-md scale-105"
-                    : "bg-background/65 hover:bg-accent/65 backdrop-blur-sm"
-                } glass-effect font-medium cursor-pointer touch-manipulation`}
+                    ? "bg-gradient-to-r from-primary to-primary/90 text-primary-foreground border-primary shadow-lg shadow-primary/20 scale-105"
+                    : "bg-card/80 hover:bg-card/90 backdrop-blur-md border-border/50 hover:border-primary/30"
+                } font-medium cursor-pointer touch-manipulation`}
                 style={{
                   flexShrink: 0,
                   flexGrow: 0,

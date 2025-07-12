@@ -24,6 +24,7 @@ import {
 } from "@/components/bookmark/dialogs";
 import { BookmarkletGenerator } from "@/components/bookmark/bookmarklet/generator";
 import { Button } from "@/components/ui/button";
+import { motion } from "framer-motion";
 // 使用集中导入的图标
 import {
   Globe,
@@ -551,9 +552,87 @@ export function CollectionDetailView({
 
   return (
     <div className="mx-auto w-[85%] pt-4 pb-8">
-      {/* 集合头部 - 标题和相关信息已移除，操作按钮已移至顶部导航栏 */}
+      {/* 美化的集合头部 */}
+      <motion.div
+        className="mb-8 relative overflow-hidden"
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, ease: "easeOut" }}
+      >
+        {/* 渐变背景 */}
+        <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-primary/10 rounded-xl"></div>
+        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-primary/5 to-transparent rounded-xl"></div>
 
-      {/* Bookmarklet生成器已移至顶部导航栏 */}
+        {/* 内容区域 */}
+        <div className="relative bg-card/80 backdrop-blur-md border border-border/50 rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            {/* 左侧：集合信息 */}
+            <div className="flex-1 min-w-0">
+              <div className="flex items-center gap-3 mb-2">
+                <div className="flex-shrink-0 w-10 h-10 bg-gradient-to-br from-primary/20 to-primary/10 rounded-lg flex items-center justify-center border border-primary/20">
+                  <Bookmark className="h-5 w-5 text-primary" />
+                </div>
+                <div className="min-w-0 flex-1">
+                  <h1 className="text-xl sm:text-2xl font-bold text-foreground truncate">
+                    {collection.name}
+                  </h1>
+                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                    <User className="h-3.5 w-3.5" />
+                    <span>{username}</span>
+                    <span>•</span>
+                    {collection.is_public ? (
+                      <div className="flex items-center gap-1">
+                        <Globe className="h-3.5 w-3.5" />
+                        <span>公开</span>
+                      </div>
+                    ) : (
+                      <div className="flex items-center gap-1">
+                        <Lock className="h-3.5 w-3.5" />
+                        <span>私有</span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              {collection.description && (
+                <p className="text-sm text-muted-foreground leading-relaxed line-clamp-2">
+                  {collection.description}
+                </p>
+              )}
+            </div>
+
+            {/* 右侧：统计信息 */}
+            <div className="flex-shrink-0">
+              <div className="flex gap-4 sm:gap-6">
+                <div className="text-center">
+                  <div className="text-lg sm:text-xl font-bold text-primary">
+                    {localCategories.length}
+                  </div>
+                  <div className="text-xs text-muted-foreground">分类</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-lg sm:text-xl font-bold text-primary">
+                    {localCategories.reduce((total, cat) =>
+                      total + (cat.subcategories?.reduce((subTotal, sub) =>
+                        subTotal + (sub.items?.length || 0), 0) || 0), 0)}
+                  </div>
+                  <div className="text-xs text-muted-foreground">书签</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-lg sm:text-xl font-bold text-primary">
+                    {new Date(collection.created_at).toLocaleDateString('zh-CN', {
+                      year: 'numeric',
+                      month: 'short'
+                    })}
+                  </div>
+                  <div className="text-xs text-muted-foreground">创建</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </motion.div>
 
 
 
@@ -582,10 +661,15 @@ export function CollectionDetailView({
           </div>
         )
       ) : (
-        <div className="text-center py-8 border rounded-lg mb-6">
-          <p className="text-muted-foreground">
-            暂无分类，请使用右上角的"添加书签"按钮添加书签时自动创建分类
-          </p>
+        <div className="text-center py-12 border border-dashed border-border/50 rounded-xl mb-8 bg-muted/20 backdrop-blur-sm">
+          <div className="flex flex-col items-center gap-3">
+            <div className="w-12 h-12 bg-muted/50 rounded-full flex items-center justify-center">
+              <Bookmark className="h-6 w-6 text-muted-foreground" />
+            </div>
+            <p className="text-muted-foreground max-w-md">
+              暂无分类，请使用右上角的"添加书签"按钮添加书签时自动创建分类
+            </p>
+          </div>
         </div>
       )}
 
@@ -604,7 +688,7 @@ export function CollectionDetailView({
       {/* 当没有分类时，不显示两列布局 */}
       {localCategories.length === 0 ? null : (
         /* 子分类和书签的两列布局 */
-        <div className="grid grid-cols-1 md:grid-cols-7 gap-6 mt-6">
+        <div className="grid grid-cols-1 md:grid-cols-7 gap-8 mt-8">
         {/* 左侧子分类列表 */}
         <div className="md:col-span-1">
           <div className="bg-background/65 backdrop-blur-sm rounded-lg p-4 border border-border/60 shadow-sm sticky top-24">

@@ -1,7 +1,21 @@
 <?xml version='1.0' encoding='utf-8' standalone='yes'?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://bookmark.leishui.com/</loc>
-    <lastmod>2024-12-24T10:00:00+00:00</lastmod>
+    <loc>https://lsmark.669696.xyz/</loc>
+    <lastmod>2025-01-12T10:00:00+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://lsmark.669696.xyz/auth/signin</loc>
+    <lastmod>2025-01-12T10:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://lsmark.669696.xyz/auth/signup</loc>
+    <lastmod>2025-01-12T10:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
   </url>
 </urlset>

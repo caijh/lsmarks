@@ -72,10 +72,10 @@ export function BookmarkItemCard({
 
   return (
     <Card
-      className={`overflow-hidden h-full flex flex-col relative group bg-card/65 backdrop-blur-sm
-        ${!isReadOnly ? 'hover:shadow-md transition-all duration-200 hover:-translate-y-1' : ''}
-        ${compact ? 'p-0 border-border/40 hover:border-primary/30' : ''}
-        ${longPressHandlers.isLongPressing ? 'ring-2 ring-primary/50 shadow-lg' : ''}
+      className={`overflow-hidden h-full flex flex-col relative group bg-card/80 backdrop-blur-md border border-border/50
+        ${!isReadOnly ? 'hover:shadow-xl hover:shadow-primary/10 transition-all duration-300 hover:-translate-y-2 hover:scale-[1.02] hover:border-primary/30 hover:bg-card/90' : ''}
+        ${compact ? 'p-0 border-border/40 hover:border-primary/40' : ''}
+        ${longPressHandlers.isLongPressing ? 'ring-2 ring-primary/50 shadow-lg scale-[1.02]' : ''}
         ${className}`}
       {...(isTouchDevice && isOwner && editMode && !isReadOnly ? longPressHandlers : {})}
     >

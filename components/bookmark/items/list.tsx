@@ -5,7 +5,7 @@ import { BookmarkItem } from "@/types/bookmark/item";
 import { Button } from "@/components/ui/button";
 import { BookmarkItemCard } from "./card";
 import { DragHandle } from "../shared/drag-handle";
-import { Reorder, useDragControls } from "framer-motion";
+import { Reorder, useDragControls, motion } from "framer-motion";
 import { Plus } from "@/components/ui/icons";
 import { PermissionGuard } from "../shared/permission-guard";
 import { toast } from "sonner";
@@ -119,18 +119,33 @@ export function BookmarkItemList({
         </div>
       ) : (
         // 标准模式 - 也使用5列布局
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-5 gap-4">
-          {items.map((item) => (
-            <BookmarkItemCard
+        <motion.div
+          className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-5 gap-4"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4, ease: "easeOut" }}
+        >
+          {items.map((item, index) => (
+            <motion.div
               key={item.uuid}
-              item={item}
-              isOwner={isOwner}
-              editMode={editMode}
-              onEdit={onEdit}
-              onDelete={onDelete}
-            />
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{
+                duration: 0.3,
+                delay: index * 0.05,
+                ease: "easeOut"
+              }}
+            >
+              <BookmarkItemCard
+                item={item}
+                isOwner={isOwner}
+                editMode={editMode}
+                onEdit={onEdit}
+                onDelete={onDelete}
+              />
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       )}
     </div>
   );

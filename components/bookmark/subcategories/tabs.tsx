@@ -127,13 +127,13 @@ export function SubcategoryTabs({
           >
             <TabsList
               ref={scrollContainerRef}
-              className="w-full justify-start overflow-x-auto scrollbar-hide horizontal-scroll px-6 sm:px-2"
+              className="w-full justify-start overflow-x-auto scrollbar-hide horizontal-scroll px-6 sm:px-2 bg-muted/30 backdrop-blur-sm border border-border/50 rounded-lg"
             >
               {subcategories.map((subcategory) => (
                 <TabsTrigger
                   key={subcategory.uuid}
                   value={subcategory.uuid}
-                  className="relative group min-w-fit px-3 sm:px-4 pr-4 sm:pr-6 flex-shrink-0 touch-manipulation"
+                  className="relative group min-w-fit px-3 sm:px-4 pr-4 sm:pr-6 flex-shrink-0 touch-manipulation data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-md hover:bg-accent/80 transition-all duration-200 rounded-md"
                   style={{ WebkitTapHighlightColor: 'transparent' }}
                 >
                   <span className="text-sm whitespace-nowrap">{subcategory.name}</span>
