@@ -147,13 +147,13 @@ export function SearchResultsView({ initialParams }: SearchResultsViewProps) {
         <Button
           variant="ghost"
           size="sm"
-          onClick={() => router.back()}
+          onClick={() => router.push('/')}
           className="flex items-center gap-2"
         >
           <ArrowLeft className="h-4 w-4" />
-          返回
+          返回首页
         </Button>
-        <h1 className="text-2xl font-bold">搜索结果</h1>
+        <h1 className="text-2xl font-bold">全局搜索</h1>
       </div>
 
       {/* 搜索框和筛选器 */}

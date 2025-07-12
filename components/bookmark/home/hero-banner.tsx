@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Sparkles, BookmarkPlus } from "@/components/ui/icons";
+import { Sparkles, BookmarkPlus, Search } from "@/components/ui/icons";
 import { motion } from "framer-motion";
 
 export function HeroBanner() {
@@ -106,6 +106,17 @@ export function HeroBanner() {
               >
                 <BookmarkPlus className="h-4 w-4 sm:h-5 sm:w-5" />
                 开始收藏
+              </Button>
+            </Link>
+
+            <Link href="/search" className="w-full sm:w-auto">
+              <Button
+                variant="outline"
+                size="lg"
+                className="rounded-full px-6 sm:px-8 gap-2 w-full sm:w-auto h-12 sm:h-auto text-base sm:text-lg"
+              >
+                <Search className="h-4 w-4 sm:h-5 sm:w-5" />
+                搜索书签
               </Button>
             </Link>
           </motion.div>

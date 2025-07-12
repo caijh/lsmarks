@@ -194,7 +194,7 @@ export function CollectionSearch({
       <div className="relative">
         <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
         <Input
-          placeholder="在此集合中搜索书签..."
+          placeholder="搜索书签标题、描述、网址..."
           value={collectionSearchQuery}
           onChange={(e) => setCollectionSearchQuery(e.target.value)}
           className="pl-9 pr-20"
